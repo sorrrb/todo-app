@@ -106,6 +106,7 @@
   "description": "",
   "devDependencies": {
     "css-loader": "^6.8.1",
+    "date-fns": "^3.2.0",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^3.3.3",
     "webpack": "^5.89.0",
