@@ -1,5 +1,30 @@
+@font-face {
+  font-family: 'Quicksand';
+  src: url(./assets/fonts/Quicksand-Bold.ttf);
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url(./assets/fonts/Roboto-Regular.ttf);
+  font-weight: 500;
+  font-style: normal;
+}
+
+:root {
+  --body-bg-color: #f4f5f7;
+  --header-bg-color: #B2CEDE;
+  --searchbar-bg-color: #cbd5e1;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: var(--body-bg-color);
+  font-family: 'Roboto';
 }
