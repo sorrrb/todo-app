@@ -16,7 +16,13 @@
 
 */
 
-import { createList, createTask } from './modules/task';
+import load from './modules/load';
 import './style.css';
 
 /* Main file where code execution occurs */
+
+function init() {
+  load();
+}
+
+init();
