@@ -1,12 +1,13 @@
 function createModal() {
   const modal = document.createElement('div');
   modal.classList.add('modal');
+  modal.classList.add('hidden');
 
   const modalHead = document.createElement('header');
   const modalTitle = document.createElement('h4');
   modalTitle.textContent = 'Create a new:';
   const modalEscapeBtn = document.createElement('button');
-  modalEscapeBtn.textContent = 'X';
+  modalEscapeBtn.innerHTML = '&#10005';
 
   modalHead.appendChild(modalTitle);
   modalHead.appendChild(modalEscapeBtn);
@@ -17,7 +18,8 @@ function createModal() {
   const projectLabel = document.createElement('label');
   projectLabel.textContent = 'Project:';
   const projectSelect = document.createElement('input');
-  projectSelect.type = 'checkbox';
+  projectSelect.type = 'radio';
+  projectSelect.name = 'newtype';
   projectOptionWrapper.appendChild(projectLabel);
   projectOptionWrapper.appendChild(projectSelect);
 
@@ -25,7 +27,8 @@ function createModal() {
   const todoLabel = document.createElement('label');
   todoLabel.textContent = 'Todo:';
   const todoSelect = document.createElement('input');
-  todoSelect.type = 'checkbox';
+  todoSelect.type = 'radio';
+  todoSelect.name = 'newtype';
   todoOptionWrapper.appendChild(todoLabel);
   todoOptionWrapper.appendChild(todoSelect);
 
