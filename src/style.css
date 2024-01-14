@@ -14,7 +14,8 @@
 
 :root {
   --sidebar-bg-color: #B2CEDE;
-  --content-bg-color: #cbd5e1;
+  --content-bg-color: #CBD5E1;
+  --modal-bg-color: #DBF9F0;
 }
 
 * {
@@ -31,17 +32,23 @@ body {
   min-height: 100%;
   display: grid;
   grid-template-columns: 1fr 3fr;
-  background-color: var(--body-bg-color);
   font-family: 'Roboto';
 }
 
-.sidebar, .content {
-  display: grid;
-  place-items: center;
+button:hover, input[type='date']:hover, input[type='submit']:hover, select:hover {
+  cursor: pointer;
 }
 
 .sidebar {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   background-color: var(--sidebar-bg-color);
+}
+
+.logo {
+  text-align: center;
 }
 
 .sidebar > button {
@@ -50,4 +57,95 @@ body {
 
 .content {
   background-color: var(--content-bg-color);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--modal-bg-color);
+}
+
+.modal > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal > header > h4 {
+  text-decoration: underline;
+  font-size: 1.25rem;
+}
+
+.modal > header > button  {
+  display: grid;
+  place-items: center;
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.modal > section {
+  max-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal > section > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+.modal label {
+  font-weight: bold;
+}
+
+.modal > form {
+  display: grid;
+  gap: 8px;
+}
+
+.modal > form > input[type='text'], .modal > form > textarea {
+  font-family: 'Roboto';
+  font-size: 1rem;
+  padding: 6px 4px;
+}
+
+.modal > form input[type='submit'] {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  font-family: 'Roboto';
+  font-size: 0.875rem;
+  font-weight: bold;
+  padding: 4px 8px;
+}
+
+.due-date-wrapper, .priority-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.form-wrappers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftside-wrappers, .rightside-wrappers {
+  display: flex;
+  flex-direction: column;
+}
+
+.leftside-wrappers {
+  gap: 8px;
 }
