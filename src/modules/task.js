@@ -72,3 +72,9 @@ function createTodo(title, description, dueDate, priority) {
     getPriority
   }
 }
+
+module.exports = {
+  projectManager,
+  createProject,
+  createTodo
+}

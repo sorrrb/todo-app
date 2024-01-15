@@ -57,6 +57,8 @@ button:hover, input[type='date']:hover, input[type='submit']:hover, select:hover
 }
 
 .content {
+  display: grid;
+  place-items: center;
   background-color: var(--content-bg-color);
 }
 
@@ -134,7 +136,7 @@ button:hover, input[type='date']:hover, input[type='submit']:hover, select:hover
   padding: 6px 4px;
 }
 
-.modal > form input[type='submit'] {
+#add {
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   font-size: 0.875rem;

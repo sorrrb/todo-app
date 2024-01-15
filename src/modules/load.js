@@ -7,6 +7,7 @@ function createModal() {
   const modalTitle = document.createElement('h4');
   modalTitle.textContent = 'Create a new:';
   const modalEscapeBtn = document.createElement('button');
+  modalEscapeBtn.id = 'cancel';
   modalEscapeBtn.innerHTML = '&#10005';
 
   modalHead.appendChild(modalTitle);
@@ -18,6 +19,7 @@ function createModal() {
   const projectLabel = document.createElement('label');
   projectLabel.textContent = 'Project:';
   const projectSelect = document.createElement('input');
+  projectSelect.id = 'project-select';
   projectSelect.type = 'radio';
   projectSelect.name = 'newtype';
   projectOptionWrapper.appendChild(projectLabel);
@@ -27,6 +29,7 @@ function createModal() {
   const todoLabel = document.createElement('label');
   todoLabel.textContent = 'Todo:';
   const todoSelect = document.createElement('input');
+  todoSelect.id = 'todo-select'
   todoSelect.type = 'radio';
   todoSelect.name = 'newtype';
   todoOptionWrapper.appendChild(todoLabel);
@@ -36,6 +39,7 @@ function createModal() {
   modalType.appendChild(todoOptionWrapper);
 
   const modalForm = document.createElement('form');
+  modalForm.onsubmit = function(){ return false }; // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
 
   const formName = document.createElement('input');
   formName.type = 'text';
@@ -76,8 +80,8 @@ function createModal() {
   const highPriority = document.createElement('option');
   highPriority.textContent = 'High';
 
-  const formSubmit = document.createElement('input');
-  formSubmit.type = 'submit';
+  const formSubmit = document.createElement('button');
+  formSubmit.id = 'add';
   formSubmit.textContent = 'Add';
 
   formPriorityInput.appendChild(info);
@@ -136,6 +140,11 @@ function createSidebar() {
 function createContent() {
   const content = document.createElement('div');
   content.classList.add('content');
+
+  const taskContainer = document.createElement('div');
+  taskContainer.classList.add('tasks');
+
+  content.appendChild(taskContainer);
 
   return content;
 }
