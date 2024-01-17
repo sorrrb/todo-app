@@ -17,7 +17,7 @@
 */
 
 import { projectManager, createTodo, createProject } from './modules/task';
-import load from './modules/load';
+import { createProjectCard, load } from './modules/load';
 import './style.css';
 
 /* Main file where code execution occurs */
@@ -28,30 +28,47 @@ function init() {
 }
 
 function handleEventListeners() {
-  const taskList = document.querySelector('div.tasks');
+  const taskList = document.getElementById('tasks');
+  console.log(taskList);
   const modal = document.querySelector('div.modal');
   const projectOpt = document.getElementById('project-select');
   const todoOpt = document.getElementById('todo-select');
+
+  // Open Modal
+  const create = document.getElementById('addproject');
+
+  create.addEventListener('click', () => {
+    modal.classList.toggle('hidden');
+  });
 
   // Modal submit
   const submit = document.getElementById('add');
 
   submit.addEventListener('click', () => {
     if (projectOpt.checked) {
-      console.log('Project');
+      const projectName = document.getElementById('formtitle').value;
+      console.log(projectName);
+      const newProject = createProject(projectName, 0);
+      const newProjectCard = createProjectCard(newProject);
+      taskList.appendChild(newProjectCard);
     }
     
     else if (todoOpt.checked) {
       console.log('Todo');
     }
 
-    else return;
+    else {
+      console.log('Error');
+      return;
+    };
+    modal.classList.toggle('hidden');
   });
 
   // Modal cancel
   const cancel = document.getElementById('cancel');
   cancel.addEventListener('click', () => {
     modal.classList.toggle('hidden')
+    // Potentially add logic to clear modal form values
   });
 }
 

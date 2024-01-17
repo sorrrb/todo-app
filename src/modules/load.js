@@ -39,9 +39,11 @@ function createModal() {
   modalType.appendChild(todoOptionWrapper);
 
   const modalForm = document.createElement('form');
+  modalForm.id = 'form';
   modalForm.onsubmit = function(){ return false }; // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
 
   const formName = document.createElement('input');
+  formName.id = 'formtitle';
   formName.type = 'text';
   formName.placeholder = 'Title: Run errands';
 
@@ -114,6 +116,19 @@ function createModal() {
   return modal;
 }
 
+// Returns a project card DOM element given a project object
+function createProjectCard(obj) {
+  const card = document.createElement('div');
+  card.classList.add('project-card');
+
+  const title = document.createElement('h6');
+  title.textContent = obj.getName();
+
+  card.appendChild(title);
+
+  return card;
+}
+
 // Returns sidebar DOM element
 function createSidebar() {
   const sidebar = document.createElement('div');
@@ -124,6 +139,7 @@ function createSidebar() {
   title.textContent = 'TO-DO';
 
   const addProjectBtn = document.createElement('button');
+  addProjectBtn.id = 'addproject';
   addProjectBtn.textContent = 'Add New Project';
 
   const defaultProjectBtn = document.createElement('button');
@@ -142,7 +158,7 @@ function createContent() {
   content.classList.add('content');
 
   const taskContainer = document.createElement('div');
-  taskContainer.classList.add('tasks');
+  taskContainer.id = 'tasks';
 
   content.appendChild(taskContainer);
 
@@ -161,4 +177,7 @@ function load() {
   page.appendChild(modal);
 }
 
-export default load;
+module.exports = {
+  createProjectCard,
+  load
+}
