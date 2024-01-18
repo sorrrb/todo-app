@@ -163,3 +163,7 @@ button:hover, input[type='date']:hover, input[type='submit']:hover, select:hover
 .leftside-wrappers {
   gap: 8px;
 }
+
+.project-card {
+  display: flex;
+}

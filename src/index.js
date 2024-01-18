@@ -38,7 +38,7 @@ function handleEventListeners() {
   const create = document.getElementById('addproject');
 
   create.addEventListener('click', () => {
-    modal.classList.toggle('hidden');
+    if (modal.classList.contains('hidden')) modal.classList.toggle('hidden');
   });
 
   // Modal submit

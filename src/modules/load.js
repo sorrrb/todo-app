@@ -124,7 +124,23 @@ function createProjectCard(obj) {
   const title = document.createElement('h6');
   title.textContent = obj.getName();
 
+  const list = document.createElement('div');
+  
+  if (obj.getTodos().length) {
+    obj.getTodos().forEach(element => {
+      const task = document.createElement('p');
+      task.textContent = element.getName();
+      list.appendChild(task);
+    });
+  }
+
+  // Add button to sidebar for projects
+  // On button click display project in content
+  // Project has todos, name and id
+  // Todos have title, description, due date, priority
+
   card.appendChild(title);
+  card.appendChild(list);
 
   return card;
 }
