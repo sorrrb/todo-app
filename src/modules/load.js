@@ -1,8 +1,10 @@
 import CreateIcon from '../assets/media/square-plus.svg';
+import CloseIcon from '../assets/media/close.svg';
 import ProjectIcon from '../assets/media/folder.svg';
 import { projectManager, createProject, createTodo } from './task';
 
 function handleNewProject(name, id = null) {
+  if (!name) name = 'Unnamed Project';
   const newProject = createProject(name, id);
 
   projectManager.addProject(newProject);
@@ -77,10 +79,41 @@ function createProjectModal() {
   modal.id = 'projectmodal';
 
   const modalContent = document.createElement('div');
-  const modalText = document.createElement('p');
-  modalText.textContent = 'Lorem ipsum blah blah blah';
+
+  const modalHeader = document.createElement('header');
+  const modalTitle = document.createElement('h3');
+  modalTitle.textContent = 'Create a new Project:';
+
+  const modalClose = new Image();
+  modalClose.src = CloseIcon;
+  modalClose.id = 'pclose';
   
-  modalContent.appendChild(modalText);
+  modalHeader.appendChild(modalTitle);
+  modalHeader.appendChild(modalClose);
+  modalContent.appendChild(modalHeader);
+
+  const modalForm = document.createElement('form');
+
+  const formNameLabel = document.createElement('label');
+  formNameLabel.textContent = 'Project Name:';
+  formNameLabel.for = 'pname';
+  const formNameInput = document.createElement('input');
+  formNameInput.type = 'text';
+  formNameInput.id = 'pname';
+  formNameInput.name = 'pname';
+
+  modalForm.appendChild(formNameLabel);
+  modalForm.appendChild(formNameInput);
+
+  const formSubmit = document.createElement('button');
+  formSubmit.textContent = 'Add Project';
+  formSubmit.type = 'button'; // Prevents form from recognizing button as legitimate validation action
+  formSubmit.id = 'psubmit';
+
+  modalForm.appendChild(formSubmit);
+
+  modalContent.appendChild(modalForm);
+
   modal.appendChild(modalContent);
 
   return modal;
@@ -115,3 +148,4 @@ function loadPage() {
 }
 
 export default loadPage;
+export { handleNewProject };
