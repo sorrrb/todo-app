@@ -1,21 +1,11 @@
 @font-face {
-  font-family: 'Quicksand';
-  src: url(./assets/fonts/Quicksand-Bold.ttf);
-  font-weight: bold;
-  font-style: normal;
+  font-family: 'Roboto';
+  src: url(./assets/fonts/Roboto-Regular.ttf);
 }
 
 @font-face {
-  font-family: 'Roboto';
-  src: url(./assets/fonts/Roboto-Regular.ttf);
-  font-weight: 500;
-  font-style: normal;
-}
-
-:root {
-  --sidebar-bg-color: #B2CEDE;
-  --content-bg-color: #CBD5E1;
-  --modal-bg-color: #DBF9F0;
+  font-family: 'Quicksand';
+  src: url(./assets/fonts/Quicksand-Bold.ttf);
 }
 
 * {
@@ -24,146 +14,111 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
+:root {
+  --main-bg: #ede9fe;
+  --main-accent: #d1fae5;
+  --side-accent: #e0f2fe;
+  --black-opacity: #00000040;
+  --dark-text: #1e293b;
 }
 
-body {
-  min-height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  font-family: 'Roboto';
-}
-
-button:hover, input[type='date']:hover, input[type='submit']:hover, select:hover {
+button:hover {
   cursor: pointer;
 }
 
-.sidebar {
-  padding: 24px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background-color: var(--sidebar-bg-color);
-  border-right: 1px solid rgba(0, 0, 0, 0.25);
+#create:hover {
+  cursor: pointer;
+  background-color: var(--main-bg);
 }
 
-.logo {
-  text-align: center;
-}
-
-.sidebar > button {
-  padding: 8px 24px;
-}
-
-.content {
-  display: grid;
-  place-items: center;
-  background-color: var(--content-bg-color);
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.shown {
-  visibility: visible;
-}
-
-.modal {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 16px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  background-color: var(--modal-bg-color);
-}
-
-.modal input, .modal textarea, .modal option {
-  font-family: 'Roboto';
-}
-
-.modal > header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal > header > h4 {
+.project > h3:hover, .project > img:hover {
+  cursor: pointer;
   text-decoration: underline;
+}
+
+body {
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  font-family: 'Quicksand';
+}
+
+header {
+  background-color: var(--main-accent);
+  border-bottom: 4px solid var(--side-accent);
+}
+
+header > h1 {
+  padding: 16px 24px;
+  font-size: 3rem;
+}
+
+#content {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  color: var(--dark-text);
+}
+
+#sidebar {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--main-accent);
+  border-right: 4px solid var(--side-accent);
+}
+
+#context {
+  display: flex;
+  flex-direction: column;
+}
+
+#context > h2 {
+  color: black;
+  border-bottom: 1px solid var(--black-opacity);
+  margin-bottom: 16px;
+  font-size: 1.75rem;
+}
+
+.project {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#create {
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: var(--black-opacity);
+  color: black;
+  padding: 8px 12px;
   font-size: 1.5rem;
-}
-
-.modal > header > button  {
-  display: grid;
-  place-items: center;
-  padding: 4px 6px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  font-weight: 900;
-}
-
-.modal > section {
-  max-width: 100px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.modal > section > div {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 4px;
+  justify-content: space-evenly;
 }
 
-.modal label {
-  font-weight: bold;
-  font-size: 1.125rem;
+#display {
+  background-color: var(--main-bg);
 }
 
-.modal > form {
-  display: grid;
-  gap: 12px;
+#projectmodal, #todomodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: var(--black-opacity);
 }
 
-.modal > form > input[type='text'], .modal > form > textarea {
-  font-size: 1rem;
-  padding: 6px 4px;
-}
-
-#add {
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: bold;
-  padding: 4px 8px;
-}
-
-.due-date-wrapper, .priority-wrapper {
+#projectmodal > div, #todomodal > div {
   display: flex;
-  gap: 8px;
-}
-
-.form-wrappers {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.leftside-wrappers, .rightside-wrappers {
-  display: flex;
-  flex-direction: column;
-}
-
-.leftside-wrappers {
-  gap: 8px;
-}
-
-.project-card {
-  display: flex;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid var(--side-accent);
+  width: 50%;
 }

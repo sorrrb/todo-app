@@ -1,5 +1,5 @@
 // Interface to collect and hold projects
-function projectManager() {
+const projectManager = (function () {
   // Array representing projects
   let projects = [];
 
@@ -21,7 +21,7 @@ function projectManager() {
     addProject,
     removeProject
   }
-}
+})();
 
 
 

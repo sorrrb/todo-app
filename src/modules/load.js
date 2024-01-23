@@ -1,199 +1,117 @@
-function createModal() {
+import CreateIcon from '../assets/media/square-plus.svg';
+import ProjectIcon from '../assets/media/folder.svg';
+import { projectManager, createProject, createTodo } from './task';
+
+function handleNewProject(name, id = null) {
+  const newProject = createProject(name, id);
+
+  projectManager.addProject(newProject);
+  const output = createProjectButton(name);
+
+  return output;
+}
+
+function createProjectButton(projectName) {
+  const output = document.createElement('div');
+  output.classList.add('project');
+
+  const name = document.createElement('h3');
+  name.textContent = projectName;
+
+  const icon = new Image();
+  icon.src = ProjectIcon;
+
+  output.appendChild(icon);
+  output.appendChild(name);
+
+  return output;
+}
+
+function createHeader() {
+  const header = document.createElement('header');
+
+  const headerText = document.createElement('h1');
+  headerText.textContent = 'TO-DO';
+  header.appendChild(headerText);
+
+  return header;
+}
+
+function createMain() {
+  const main = document.createElement('main');
+  main.id = 'content';
+
+  const sidebar = document.createElement('div');
+  sidebar.id = 'sidebar';
+
+  const info = document.createElement('div');
+  info.id = 'context';
+  const infoTitle = document.createElement('h2');
+  infoTitle.textContent = 'Your Projects';
+  info.appendChild(infoTitle);
+
+  const defaultProject = handleNewProject('Default Project', 0);
+  info.appendChild(defaultProject);
+
+  sidebar.appendChild(info);
+
+  const create = document.createElement('div');
+  create.id = 'create';
+  create.textContent = 'Create New';
+  const createBtn = new Image();
+  createBtn.src = CreateIcon;
+  create.appendChild(createBtn);
+  sidebar.appendChild(create);
+
+  main.appendChild(sidebar);
+
+  const display = document.createElement('div');
+  display.id = 'display';
+  main.appendChild(display);
+
+  return main;
+}
+
+function createProjectModal() {
   const modal = document.createElement('div');
-  modal.classList.add('modal');
-  modal.classList.add('hidden');
+  modal.id = 'projectmodal';
 
-  const modalHead = document.createElement('header');
-  const modalTitle = document.createElement('h4');
-  modalTitle.textContent = 'Create a new:';
-  const modalEscapeBtn = document.createElement('button');
-  modalEscapeBtn.id = 'cancel';
-  modalEscapeBtn.innerHTML = '&#10005';
-
-  modalHead.appendChild(modalTitle);
-  modalHead.appendChild(modalEscapeBtn);
-
-  const modalType = document.createElement('section');
-
-  const projectOptionWrapper = document.createElement('div');
-  const projectLabel = document.createElement('label');
-  projectLabel.textContent = 'Project:';
-  const projectSelect = document.createElement('input');
-  projectSelect.id = 'project-select';
-  projectSelect.type = 'radio';
-  projectSelect.name = 'newtype';
-  projectOptionWrapper.appendChild(projectLabel);
-  projectOptionWrapper.appendChild(projectSelect);
-
-  const todoOptionWrapper = document.createElement('div');
-  const todoLabel = document.createElement('label');
-  todoLabel.textContent = 'Todo:';
-  const todoSelect = document.createElement('input');
-  todoSelect.id = 'todo-select'
-  todoSelect.type = 'radio';
-  todoSelect.name = 'newtype';
-  todoOptionWrapper.appendChild(todoLabel);
-  todoOptionWrapper.appendChild(todoSelect);
-
-  modalType.appendChild(projectOptionWrapper);
-  modalType.appendChild(todoOptionWrapper);
-
-  const modalForm = document.createElement('form');
-  modalForm.id = 'form';
-  modalForm.onsubmit = function(){ return false }; // https://stackoverflow.com/questions/19454310/stop-form-refreshing-page-on-submit
-
-  const formName = document.createElement('input');
-  formName.id = 'formtitle';
-  formName.type = 'text';
-  formName.placeholder = 'Title: Run errands';
-
-  const formDescription = document.createElement('textarea');
-  formDescription.placeholder = 'Description: Go grocery shopping, return those pants, get oil change';
-  formDescription.rows = 5;
-  formDescription.cols = 50;
-
-  const formInputWrappers = document.createElement('div');
-  formInputWrappers.classList.add('form-wrappers');
-
-  const formInputLeft = document.createElement('div');
-  formInputLeft.classList.add('leftside-wrappers');
-
-  const formInputRight = document.createElement('div');
-  formInputRight.classList.add('rightside-wrappers');
-
-  const formDeadline = document.createElement('div');
-  formDeadline.classList.add('due-date-wrapper');
-  const formDeadlineLabel = document.createElement('label');
-  formDeadlineLabel.textContent = 'Due Date:';
-  const formDeadlineInput = document.createElement('input');
-  formDeadlineInput.type = 'date';
-
-  const formPriority = document.createElement('div');
-  formPriority.classList.add('priority-wrapper');
-  const formPriorityLabel = document.createElement('label');
-  formPriorityLabel.textContent = 'Priority:';
-  const formPriorityInput = document.createElement('select');
-  const info = document.createElement('option');
-  info.textContent = '--- Choose an option: ---';
-  const lowPriority = document.createElement('option');
-  lowPriority.textContent = 'Low';
-  const mediumPriority = document.createElement('option');
-  mediumPriority.textContent = 'Medium';
-  const highPriority = document.createElement('option');
-  highPriority.textContent = 'High';
-
-  const formSubmit = document.createElement('button');
-  formSubmit.id = 'add';
-  formSubmit.textContent = 'Add';
-
-  formPriorityInput.appendChild(info);
-  formPriorityInput.appendChild(lowPriority);
-  formPriorityInput.appendChild(mediumPriority);
-  formPriorityInput.appendChild(highPriority);
-
-  formPriority.appendChild(formPriorityLabel);
-  formPriority.appendChild(formPriorityInput);
-
-  formDeadline.appendChild(formDeadlineLabel);
-  formDeadline.appendChild(formDeadlineInput);
-
-  formInputLeft.appendChild(formDeadline);
-  formInputLeft.appendChild(formPriority);
-
-  formInputRight.appendChild(formSubmit);
-
-  formInputWrappers.appendChild(formInputLeft);
-  formInputWrappers.appendChild(formInputRight);
+  const modalContent = document.createElement('div');
+  const modalText = document.createElement('p');
+  modalText.textContent = 'Lorem ipsum blah blah blah';
   
-  modalForm.appendChild(formName);
-  modalForm.appendChild(formDescription);
-  modalForm.appendChild(formInputWrappers);
-
-  modal.appendChild(modalHead);
-  modal.appendChild(modalType);
-  modal.appendChild(modalForm);
+  modalContent.appendChild(modalText);
+  modal.appendChild(modalContent);
 
   return modal;
 }
 
-// Returns a project card DOM element given a project object
-function createProjectCard(obj) {
-  const card = document.createElement('div');
-  card.classList.add('project-card');
+function createTodoModal() {
+  const modal = document.createElement('div');
+  modal.id = 'todomodal';
 
-  const title = document.createElement('h6');
-  title.textContent = obj.getName();
-
-  const list = document.createElement('div');
+  const modalContent = document.createElement('div');
+  const modalText = document.createElement('p');
+  modalText.textContent = 'Lorem ipsum blah blah blah';
   
-  if (obj.getTodos().length) {
-    obj.getTodos().forEach(element => {
-      const task = document.createElement('p');
-      task.textContent = element.getName();
-      list.appendChild(task);
-    });
-  }
+  modalContent.appendChild(modalText);
+  modal.appendChild(modalContent);
 
-  // Add button to sidebar for projects
-  // On button click display project in content
-  // Project has todos, name and id
-  // Todos have title, description, due date, priority
-
-  card.appendChild(title);
-  card.appendChild(list);
-
-  return card;
+  return modal;
 }
 
-// Returns sidebar DOM element
-function createSidebar() {
-  const sidebar = document.createElement('div');
-  sidebar.classList.add('sidebar');
-
-  const title = document.createElement('h1');
-  title.classList.add('logo');
-  title.textContent = 'TO-DO';
-
-  const addProjectBtn = document.createElement('button');
-  addProjectBtn.id = 'addproject';
-  addProjectBtn.textContent = 'Add New Project';
-
-  const defaultProjectBtn = document.createElement('button');
-  defaultProjectBtn.textContent = 'Default Project';
-
-  sidebar.appendChild(title);
-  sidebar.appendChild(addProjectBtn);
-  sidebar.appendChild(defaultProjectBtn);
-
-  return sidebar;
-}
-
-// Returns main content DOM element
-function createContent() {
-  const content = document.createElement('div');
-  content.classList.add('content');
-
-  const taskContainer = document.createElement('div');
-  taskContainer.id = 'tasks';
-
-  content.appendChild(taskContainer);
-
-  return content;
-}
-
-// Generates/appends DOM elements to document body
-function load() {
+function loadPage() {
   const page = document.body;
-  const sidebar = createSidebar();
-  const content = createContent();
-  const modal = createModal();
 
-  page.appendChild(sidebar);
+  const header = createHeader();
+  const content = createMain();
+  const projectModal = createProjectModal();
+  const todoModal = createTodoModal();
+
+  page.appendChild(header);
   page.appendChild(content);
-  page.appendChild(modal);
+  page.appendChild(projectModal);
+  page.appendChild(todoModal);
 }
 
-module.exports = {
-  createProjectCard,
-  load
-}
+export default loadPage;
