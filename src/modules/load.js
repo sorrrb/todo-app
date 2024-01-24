@@ -1,69 +1,59 @@
-import CreateIcon from '../assets/media/square-plus.svg';
-import CloseIcon from '../assets/media/close.svg';
-import ProjectIcon from '../assets/media/folder.svg';
-import { projectManager, createProject, createTodo } from './task';
+import createIcon from '../assets/media/square-plus.svg'
+import closeIcon from '../assets/media/close.svg';
 
-function handleNewProject(name, id = null) {
-  if (!name) name = 'Unnamed Project';
-  const newProject = createProject(name, id);
-
-  projectManager.addProject(newProject);
-  const output = createProjectButton(name);
-
-  return output;
-}
-
-function createProjectButton(projectName) {
-  const output = document.createElement('div');
-  output.classList.add('project');
-
-  const name = document.createElement('h3');
-  name.textContent = projectName;
-
-  const icon = new Image();
-  icon.src = ProjectIcon;
-
-  output.appendChild(icon);
-  output.appendChild(name);
-
-  return output;
-}
-
-function createHeader() {
+function createHeader() { // Responsible for generating elements for applet style
   const header = document.createElement('header');
+  header.id = 'header';
 
-  const headerText = document.createElement('h1');
-  headerText.textContent = 'TO-DO';
-  header.appendChild(headerText);
+  const title = document.createElement('h1');
+  title.textContent = 'To-Do';
+  title.id = 'page-title';
+
+  header.appendChild(title);
 
   return header;
 }
 
-function createMain() {
+function createMainProjects() { // Helper responsible for generating sidebar elements
+  const projects = document.createElement('div');
+  projects.id = 'projects';
+
+  const projectsTitle = document.createElement('h2');
+  projectsTitle.id = 'projects-title';
+  projectsTitle.textContent = 'Your Projects';
+
+  const projectsContainer = document.createElement('div');
+  projectsContainer.id = 'projects-container';
+
+  projects.appendChild(projectsTitle);
+  projects.appendChild(projectsContainer);
+
+  return projects;
+}
+
+function createMain() { // Responsible for generating elements for applet style/functionality
   const main = document.createElement('main');
-  main.id = 'content';
+  main.id = 'main';
 
   const sidebar = document.createElement('div');
   sidebar.id = 'sidebar';
 
-  const info = document.createElement('div');
-  info.id = 'context';
-  const infoTitle = document.createElement('h2');
-  infoTitle.textContent = 'Your Projects';
-  info.appendChild(infoTitle);
+  const projects = createMainProjects();
 
-  const defaultProject = handleNewProject('Default Project', 0);
-  info.appendChild(defaultProject);
+  const addProjectBtn = document.createElement('button');
+  addProjectBtn.id = 'create-project';
 
-  sidebar.appendChild(info);
+  const btnIcon = new Image();
+  btnIcon.src = createIcon;
 
-  const create = document.createElement('div');
-  create.id = 'create';
-  create.textContent = 'Create New';
-  const createBtn = new Image();
-  createBtn.src = CreateIcon;
-  create.appendChild(createBtn);
-  sidebar.appendChild(create);
+  const btnText = document.createElement('p');
+  btnText.textContent = 'Add New Project';
+
+  addProjectBtn.appendChild(btnText);
+  addProjectBtn.appendChild(btnIcon);
+
+  sidebar.appendChild(projects);
+  sidebar.appendChild(addProjectBtn);
 
   main.appendChild(sidebar);
 
@@ -74,78 +64,80 @@ function createMain() {
   return main;
 }
 
-function createProjectModal() {
+function createProjectModal() { // Responsible for providing interface to add to-dos to projects
   const modal = document.createElement('div');
-  modal.id = 'projectmodal';
+  modal.id = 'project-modal';
 
   const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
 
   const modalHeader = document.createElement('header');
-  const modalTitle = document.createElement('h3');
-  modalTitle.textContent = 'Create a new Project:';
+  modalHeader.classList.add('modal-header');
 
-  const modalClose = new Image();
-  modalClose.src = CloseIcon;
-  modalClose.id = 'pclose';
-  
+  const modalTitle = document.createElement('h4');
+  modalTitle.textContent = 'Add a new Project:';
+
+  const closeModalBtn = new Image();
+  closeModalBtn.id = 'pmodal-close';
+  closeModalBtn.classList.add('close-modal');
+  closeModalBtn.src = closeIcon;
+
   modalHeader.appendChild(modalTitle);
-  modalHeader.appendChild(modalClose);
-  modalContent.appendChild(modalHeader);
+  modalHeader.appendChild(closeModalBtn);
 
   const modalForm = document.createElement('form');
+  const projectNameField = document.createElement('input');
+  projectNameField.id = 'ptitle';
+  projectNameField.placeholder = 'Enter Project Title';
+  projectNameField.type = 'text';
 
-  const formNameLabel = document.createElement('label');
-  formNameLabel.textContent = 'Project Name:';
-  formNameLabel.for = 'pname';
-  const formNameInput = document.createElement('input');
-  formNameInput.type = 'text';
-  formNameInput.id = 'pname';
-  formNameInput.name = 'pname';
+  const modalSubmit = document.createElement('button');
+  modalSubmit.id = 'submit-project';
+  modalSubmit.classList.add('submit-btn');
+  modalSubmit.type = 'button';
+  modalSubmit.textContent = 'Add Project';
 
-  modalForm.appendChild(formNameLabel);
-  modalForm.appendChild(formNameInput);
+  modalForm.appendChild(projectNameField);
 
-  const formSubmit = document.createElement('button');
-  formSubmit.textContent = 'Add Project';
-  formSubmit.type = 'button'; // Prevents form from recognizing button as legitimate validation action
-  formSubmit.id = 'psubmit';
-
-  modalForm.appendChild(formSubmit);
-
+  modalContent.appendChild(modalHeader);
   modalContent.appendChild(modalForm);
+  modalContent.appendChild(modalSubmit);
 
   modal.appendChild(modalContent);
 
   return modal;
 }
 
-function createTodoModal() {
+function createTodoModal() { // Responsible for providing interface to add projects to project manager
   const modal = document.createElement('div');
-  modal.id = 'todomodal';
-
-  const modalContent = document.createElement('div');
-  const modalText = document.createElement('p');
-  modalText.textContent = 'Lorem ipsum blah blah blah';
-  
-  modalContent.appendChild(modalText);
-  modal.appendChild(modalContent);
+  modal.id = 'todo-modal';
 
   return modal;
 }
 
-function loadPage() {
-  const page = document.body;
 
+
+function paintDisplay() { // Responsible for painting main display style
   const header = createHeader();
-  const content = createMain();
+  const main = createMain();
   const projectModal = createProjectModal();
   const todoModal = createTodoModal();
 
-  page.appendChild(header);
-  page.appendChild(content);
-  page.appendChild(projectModal);
-  page.appendChild(todoModal);
+  const webpage = document.body;
+  webpage.appendChild(header);
+  webpage.appendChild(main);
+  webpage.appendChild(projectModal);
+  webpage.appendChild(todoModal);
+}
+
+function updateDisplay() { // Responsible for updating display projects/todos
+
+}
+
+function loadPage() {
+  paintDisplay();
+
+
 }
 
 export default loadPage;
-export { handleNewProject };

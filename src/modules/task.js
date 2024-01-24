@@ -1,53 +1,39 @@
-// Interface to collect and hold projects
-const projectManager = (function () {
-  // Array representing projects
-  let projects = [];
+function createTodo(title, description, dueDate, priority) { // Responsible for creating Todo objects (which have properties/methods related to generating 'tasks that are needed to do')
+  const getTitle = () => title;
 
-  // Returns projects array
-  const getProjects = () => projects;
+  const getDescription = () => description;
 
-  // Takes project object, adds it to projects array
-  const addProject = project => {
-    projects.push(project);
-  }
+  const getDueDate = () => dueDate;
 
-  // Takes project object, removes it from projects array
-  const removeProject = project => {
-    projects = projects.filter((element) => element !== project);
-  }
+  const getPriority = () => priority;
 
   return {
-    getProjects,
-    addProject,
-    removeProject
-  }
-})();
+    getTitle,
+    getDescription,
+    getDueDate,
+    getPriority
+  };
+}
 
-
-
-// Factory - object represents a collection of 'todo' objects
-function createProject(name, id) {
-  // Array representing todos
+function createProject(title, id) { // Responsible for creating Project objects (which hold todo objects relating to storing/collecting 'tasks that are needed to do')
   let todos = [];
 
-  const getName = () => name;
+  const getTitle = () => title;
+
   const getId = () => id;
 
-  // Returns todos array
   const getTodos = () => todos;
-  
-  // Takes todo object, adds it to todos array
-  const addTodo = todo => {
-    todos.push(todo);
+
+  const addTodo = todoObj => {
+    todos.push(todoObj);
   }
 
-  // Takes todo object, removes it from todos array
-  const removeTodo = todo => {
-    todos = todos.filter((element) => element !== todo);
+  const removeTodo = todoObj => {
+    todos = todos.filter((todo) => todo !== todoObj);
   }
 
   return {
-    getName,
+    getTitle,
     getId,
     getTodos,
     addTodo,
@@ -55,26 +41,28 @@ function createProject(name, id) {
   }
 }
 
+const projectManager = (function () { // Responsible for storing/accessing/modifying Project objects
+  let projects = [];
 
+  const addProject = projectObj => {
+    projects.push(projectObj);
+  }
 
-// Factory - object represents a single 'todo' object and it's properties
-function createTodo(title, description, dueDate, priority) {
-  
-  const getName = () => title;
-  const getDescription = () => description;
-  const getDueDate = () => dueDate;
-  const getPriority = () => priority;
+  const removeProject = projectObj => {
+    projects = projects.filter((project) => project !== projectObj);
+  }
+
+  const getProjects = () => projects;
 
   return {
-    getName,
-    getDescription,
-    getDueDate,
-    getPriority
+    addProject,
+    removeProject,
+    getProjects
   }
-}
+})();
 
 module.exports = {
-  projectManager,
+  createTodo,
   createProject,
-  createTodo
+  projectManager
 }

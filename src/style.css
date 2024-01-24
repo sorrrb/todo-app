@@ -1,11 +1,15 @@
 @font-face {
-  font-family: 'Roboto';
-  src: url(./assets/fonts/Roboto-Regular.ttf);
+  font-family: 'Quicksand';
+  src: url(./assets/fonts/Quicksand-VariableFont_wght.ttf);
 }
 
-@font-face {
-  font-family: 'Quicksand';
-  src: url(./assets/fonts/Quicksand-Bold.ttf);
+:root {
+  --main-bg: #f3f4f6;
+  --side-bg: #e2e8f0;
+  --button-bg: #fef3c7f5;
+  --button-contrast: #f5dd90;
+  --accent-border: #fef3c7f5;
+  --modal-bg: #00000050;
 }
 
 * {
@@ -14,153 +18,153 @@
   box-sizing: border-box;
 }
 
-:root {
-  --main-bg: #ede9fe;
-  --main-accent: #d1fae5;
-  --side-accent: #e0f2fe;
-  --black-opacity: #00000060;
-  --contrast-opacity: #00000010;
-  --dark-text: #1e293b;
-}
-
-button:hover, #projectmodal header > img:hover {
-  cursor: pointer;
-}
-
-#create:hover {
-  cursor: pointer;
-  background-color: var(--main-bg);
-}
-
-.project > h3:hover, .project > img:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
 body {
   height: 100svh;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr 9fr;
   font-family: 'Quicksand';
 }
 
-body > header {
-  background-color: var(--main-accent);
-  border-bottom: 8px solid var(--side-accent);
+button:hover, .close-modal:hover {
+  cursor: pointer;
 }
 
-header > h1 {
-  padding: 16px 24px;
-  font-size: 3rem;
+#create-project:hover {
+  background-color: var(--button-contrast);
 }
 
-#content {
+.project-card img:hover, .project-card p:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+
+
+
+#header {
+  padding-inline: 36px;
+  display: flex;
+  align-items: center;
+  font-size: 1.75rem;
+  background-color: var(--side-bg);
+  border-bottom: 6px solid var(--accent-border);
+}
+
+
+#page-title {
+  text-transform: uppercase;
+}
+
+
+
+
+
+#main {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  color: var(--dark-text);
+  background-color: var(--main-bg);
 }
+
 
 #sidebar {
-  padding: 16px 24px;
+  padding-block: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--main-accent);
-  border-right: 8px solid var(--side-accent);
-}
-
-#context {
-  display: flex;
-  flex-direction: column;
-}
-
-#context > h2 {
-  color: black;
-  border-bottom: 1px solid var(--black-opacity);
-  margin-bottom: 16px;
-  font-size: 1.75rem;
-}
-
-.project {
-  display: flex;
   align-items: center;
-  gap: 4px;
+  background-color: var(--side-bg);
+  border-right: 6px solid var(--accent-border);
 }
 
-#create {
-  border: 1px solid black;
-  border-radius: 8px;
-  background-color: var(--black-opacity);
-  color: black;
-  padding: 8px 12px;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-#display {
-  background-color: var(--main-bg);
-}
-
-#projectmodal, #todomodal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: var(--black-opacity);
-}
-
-#projectmodal > div, #todomodal > div {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-  margin: 15% auto;
-  padding: 20px;
-  background-color: var(--main-bg);
-  border: 2px solid var(--side-accent);
-  box-shadow: 0 0 36px 2px var(--contrast-opacity);
-  width: 30%;
-}
-
-#projectmodal header, #todomodal header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-transform: uppercase;
-  padding-bottom: 12px;
+#projects-title {
   border-bottom: 1px solid black;
 }
 
-#projectmodal form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 36px;
+#projects {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-#projectmodal form label {
-  text-decoration: underline;
-  font-size: 1.125rem;
+.project-card, .project-card-left, .project-card-right {
+  display: flex;
+  align-items: center;
 }
 
-#projectmodal form input {
-  padding: 2px 4px;
-  justify-self: start;
+.project-card {
+  justify-content: space-between;
+}
+
+.project-card-left {
+  gap: 4px;
+  font-weight: 500;
+}
+
+#create-project {
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  background-color: var(--button-bg);
+  border: 1px solid black;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  gap: 4px;
+}
+
+
+#display {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+#project-modal, #todo-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-bg);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--main-bg);
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+#project-modal input {
+  padding: 4px 8px;
+  border: 1px solid var(--modal-bg);
+  border-radius: 6px;
+  font-family: 'Quicksand';
   font-size: 1rem;
 }
 
-#projectmodal form button {
-  grid-column: 1 / 3;
-  justify-self: center;
-  background: none;
+.submit-btn {
   padding: 4px 8px;
-  font-family: 'Quicksand';
-  font-size: 0.875rem;
-  border: 2px solid black;
-  border-radius: 8px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: var(--button-contrast);
+  font-weight: bold;
+  align-self: center;
 }
