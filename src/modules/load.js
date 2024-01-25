@@ -86,8 +86,10 @@ function createProjectModal() { // Responsible for providing interface to add to
   modalHeader.appendChild(closeModalBtn);
 
   const modalForm = document.createElement('form');
+  modalForm.onsubmit = function () { return false };
   const projectNameField = document.createElement('input');
   projectNameField.id = 'ptitle';
+  projectNameField.maxLength = 16;
   projectNameField.placeholder = 'Enter Project Title';
   projectNameField.type = 'text';
 
