@@ -30,7 +30,7 @@ button:hover, .close-modal:hover {
   cursor: pointer;
 }
 
-#create-project:hover {
+#create-project:hover, #todo-menu > button:hover {
   background-color: var(--button-contrast);
 }
 
@@ -63,7 +63,7 @@ button:hover, .close-modal:hover {
 
 #main {
   display: grid;
-  grid-template-columns: 2fr 7fr;
+  grid-template-columns: 2fr 8fr;
   background-color: var(--main-bg);
 }
 
@@ -95,6 +95,7 @@ button:hover, .close-modal:hover {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
 
 .project-card, .project-card-left, .project-card-right {
@@ -129,6 +130,42 @@ button:hover, .close-modal:hover {
 #display {
   display: flex;
   flex-direction: column;
+}
+
+#todo-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--modal-bg);
+  padding: 8px;
+  border-bottom: 1px solid var(--modal-bg);
+}
+
+#todo-search {
+  padding-inline-start: 18px;
+  padding-block: 2px;
+  font-family: 'Quicksand';
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid var(--border-opaque);
+  border-radius: 4px;
+}
+
+#searchbar-icon {
+  height: 20px;
+  width: 20px;
+  padding-top: 6px;
+  position: absolute;
+  pointer-events: none;
+}
+
+#todo-menu > button {
+  font-size: 0.75rem;
+  font-weight: bold;
+  background-color: var(--button-bg);
+  border: 1px solid var(--border-opaque);
+  border-radius: 4px;
+  padding: 4px 8px;
 }
 
 

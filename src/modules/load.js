@@ -1,5 +1,6 @@
 import createIcon from '../assets/media/square-plus.svg'
 import closeIcon from '../assets/media/close.svg';
+import searchIcon from '../assets/media/search.svg';
 
 function createHeader() { // Responsible for generating elements for applet style
   const header = document.createElement('header');
@@ -31,6 +32,34 @@ function createMainProjects() { // Helper responsible for generating sidebar ele
   return projects;
 }
 
+function createDisplayMain() {
+  const display = document.createElement('nav');
+  display.id = 'todo-menu';
+
+  const searchbarWrapper = document.createElement('div');
+  searchbarWrapper.id = 'searchbar-container';
+
+  const searchbarIcon = new Image();
+  searchbarIcon.src = searchIcon;
+  searchbarIcon.id = 'searchbar-icon';
+
+  const searchbar = document.createElement('input');
+  searchbar.type = 'searchbar';
+  searchbar.id = 'todo-search';
+
+  const createBtn = document.createElement('button');
+  createBtn.id = 'create-todo';
+  createBtn.innerHTML = `Add a Todo &#10133;`;
+
+  searchbarWrapper.appendChild(searchbarIcon);
+  searchbarWrapper.append(searchbar);
+
+  display.appendChild(searchbarWrapper);
+  display.appendChild(createBtn);
+
+  return display;
+}
+
 function createMain() { // Responsible for generating elements for applet style/functionality
   const main = document.createElement('main');
   main.id = 'main';
@@ -59,6 +88,11 @@ function createMain() { // Responsible for generating elements for applet style/
 
   const display = document.createElement('div');
   display.id = 'display';
+
+  const displayMenu = createDisplayMain();
+
+  display.appendChild(displayMenu);
+
   main.appendChild(display);
 
   return main;
