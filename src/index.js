@@ -18,6 +18,7 @@ function printProjectCards() {
   for (let i = 0; i < projectQuantity; i++) {
     const newCard = document.createElement('div');
     newCard.classList.add('project-card');
+    newCard.dataset.id = `${projectList[i].getId()}`;
 
     const cardLeft = document.createElement('div');
     cardLeft.classList.add('project-card-left');
@@ -62,20 +63,26 @@ function printProjectCards() {
   });
 }
 
+function styleOtherProjects() { // Helper function
+  const projectCards = document.querySelectorAll('div.project-card');
+
+  projectCards.forEach((card) => {
+    const text = card.querySelector('p');
+    text.style.fontStyle = 'normal';
+    text.style.fontWeight = '500';
+  })
+}
+
 function handleProjects() { // Function that handles project tab switching and associated style rules
   const projectCards = document.querySelectorAll('div.project-card');
+
   projectCards.forEach((project) => {
     project.addEventListener('click', e => {
-      for (let i = 0; i < projectCards.length; i++) {
-        if (projectCards[i].classList.contains('active-project')) {
-          projectCards[i].classList.toggle('active-project');
-          projectCards[i].firstElementChild.lastElementChild.style.fontStyle = 'normal';
-          projectCards[i].firstElementChild.lastElementChild.style.fontWeight = 'normal';
-        }
-      }
-      e.target.style.fontStyle = 'italic';
-      e.target.style.fontWeight = 'bold';
-      e.target.parentElement.parentElement.classList.toggle('active-project');
+      styleOtherProjects();
+      if (e.target.classList.contains('delete-project')) return;
+      const text = project.querySelector('p');
+      text.style.fontStyle = 'italic';
+      text.style.fontWeight = 'bold';
       // how do we determine what project was selected/clicked?
     })
   })
@@ -107,7 +114,7 @@ function handleState(state, bool) { // Function to style rules for page content 
     handleProjects();
   }
 
-  const formField = document.getElementById('ptitle');
+  const formField = document.getElementById('ptitle'); // Resets modal form
   formField.value = '';
 }
 
@@ -127,7 +134,7 @@ function manageEventListeners() {
     handleState(0, true);
   })
 
-  const addTodoBtn = document.getElementById('create-todo');
+  const addTodoBtn = document.getElementById('create-todo'); // Skeleton for todo creation
   addTodoBtn.addEventListener('click', () => {
     if (projectManager.getActiveProject()) console.log('Pass');
     else console.log('Test fail');

@@ -47,7 +47,9 @@ const projectManager = (function () { // Responsible for storing/accessing/modif
   let activeProject = null;
 
   const getActiveProject = () => activeProject;
-  const setActiveProject = projectObj => activeProject = projectObj;
+  const setActiveProject = projectId => {
+    activeProject = projects.find((project) => project.getId() === projectId);
+  }
 
   const addProject = projectObj => {
     projects.push(projectObj);
