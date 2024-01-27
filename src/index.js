@@ -68,6 +68,7 @@ function styleOtherProjects() { // Helper function
 
   projectCards.forEach((card) => {
     const text = card.querySelector('p');
+    text.style.textDecoration = 'none';
     text.style.fontStyle = 'normal';
     text.style.fontWeight = '500';
   })
@@ -81,6 +82,7 @@ function handleProjects() { // Function that handles project tab switching and a
       styleOtherProjects();
       if (e.target.classList.contains('delete-project')) return;
       const text = project.querySelector('p');
+      text.style.textDecoration = 'underline';
       text.style.fontStyle = 'italic';
       text.style.fontWeight = 'bold';
       // how do we determine what project was selected/clicked?
