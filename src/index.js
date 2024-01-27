@@ -18,6 +18,7 @@ function printProjectCards() {
   for (let i = 0; i < projectQuantity; i++) {
     const newCard = document.createElement('div');
     newCard.classList.add('project-card');
+    if (!i) newCard.classList.add('default-project');
     newCard.dataset.id = `${projectList[i].getId()}`;
 
     const cardLeft = document.createElement('div');
@@ -52,6 +53,7 @@ function printProjectCards() {
   const deleteBtns = document.querySelectorAll('.delete-project');
   deleteBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
+      if (btn.parentElement.parentElement.classList.contains('default-project')) return;
       const elementIndex = Array.from(deleteBtns).indexOf(btn);
       if (elementIndex === -1) {
         console.log('Error');
@@ -59,6 +61,7 @@ function printProjectCards() {
       }
       const projects = projectManager.getProjects();
       removeProjectCard(projects[elementIndex]);
+      handleProjects();
     });
   });
 }
@@ -72,6 +75,7 @@ function styleOtherProjects() { // Helper function
   const projectCards = document.querySelectorAll('div.project-card');
 
   projectCards.forEach((card) => {
+    if (card.classList.contains('active-project')) card.classList.toggle('active-project');
     const text = card.querySelector('p');
     if (text.classList.contains('active-project-text')) text.classList.toggle('active-project-text');
   })
@@ -84,6 +88,7 @@ function handleProjects() { // Function that handles project tab switching and a
     project.addEventListener('click', e => {
       if (e.target.classList.contains('delete-project')) return;
       styleOtherProjects();
+      project.classList.toggle('active-project');
       const text = project.querySelector('p');
       text.classList.toggle('active-project-text');
       projectManager.setActiveProject(project.dataset.id);
@@ -171,9 +176,22 @@ function manageEventListeners() {
   })
 }
 
+function createDefaultProject() {
+  const defaultProject = createProject('Default Project', 0);
+  projectManager.addProject(defaultProject);
+  projectManager.setActiveProject(0);
+  printProjectCards();
+  
+  const defaultProjectText = document.getElementById('projects-container').firstElementChild;
+  defaultProjectText.classList.add('default-project');
+  defaultProjectText.classList.add('active-project');
+  defaultProjectText.querySelector('p').classList.toggle('active-project-text');
+}
+
 function init() { // Main screen controller function
   loadPage();
   manageEventListeners();
+  createDefaultProject();
 }
 
 init(); // Screen controller call

@@ -39,6 +39,10 @@ button:hover, .close-modal:hover {
   text-decoration: underline;
 }
 
+.default-project img:hover {
+  cursor: not-allowed;
+}
+
 
 
 
