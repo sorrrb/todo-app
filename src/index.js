@@ -62,6 +62,25 @@ function printProjectCards() {
   });
 }
 
+function handleProjects() { // Function that handles project tab switching and associated style rules
+  const projectCards = document.querySelectorAll('div.project-card');
+  projectCards.forEach((project) => {
+    project.addEventListener('click', e => {
+      for (let i = 0; i < projectCards.length; i++) {
+        if (projectCards[i].classList.contains('active-project')) {
+          projectCards[i].classList.toggle('active-project');
+          projectCards[i].firstElementChild.lastElementChild.style.fontStyle = 'normal';
+          projectCards[i].firstElementChild.lastElementChild.style.fontWeight = 'normal';
+        }
+      }
+      e.target.style.fontStyle = 'italic';
+      e.target.style.fontWeight = 'bold';
+      e.target.parentElement.parentElement.classList.toggle('active-project');
+      // how do we determine what project was selected/clicked?
+    })
+  })
+}
+
 function handleState(state, bool) { // Function to style rules for page content and associated modals
   const projectModal = document.getElementById('project-modal');
   const todoModal = document.getElementById('todo-modal');
@@ -85,6 +104,7 @@ function handleState(state, bool) { // Function to style rules for page content 
     const newProject = createProject(formValue, projects);
     projectManager.addProject(newProject);
     printProjectCards();
+    handleProjects();
   }
 
   const formField = document.getElementById('ptitle');
@@ -105,6 +125,12 @@ function manageEventListeners() {
   const submitProjectBtn = document.getElementById('submit-project');
   submitProjectBtn.addEventListener('click', () => {
     handleState(0, true);
+  })
+
+  const addTodoBtn = document.getElementById('create-todo');
+  addTodoBtn.addEventListener('click', () => {
+    if (projectManager.getActiveProject()) console.log('Pass');
+    else console.log('Test fail');
   })
 }
 

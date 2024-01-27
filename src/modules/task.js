@@ -44,6 +44,11 @@ function createProject(title, id) { // Responsible for creating Project objects 
 const projectManager = (function () { // Responsible for storing/accessing/modifying Project objects
   let projects = [];
 
+  let activeProject = null;
+
+  const getActiveProject = () => activeProject;
+  const setActiveProject = projectObj => activeProject = projectObj;
+
   const addProject = projectObj => {
     projects.push(projectObj);
   }
@@ -55,6 +60,8 @@ const projectManager = (function () { // Responsible for storing/accessing/modif
   const getProjects = () => projects;
 
   return {
+    getActiveProject,
+    setActiveProject,
     addProject,
     removeProject,
     getProjects
