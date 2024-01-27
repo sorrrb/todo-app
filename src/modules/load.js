@@ -122,7 +122,7 @@ function createProjectModal() { // Responsible for providing interface to add to
   const modalForm = document.createElement('form');
   modalForm.onsubmit = function () { return false };
   const projectNameField = document.createElement('input');
-  projectNameField.id = 'ptitle';
+  projectNameField.id = 'pmodal-title';
   projectNameField.maxLength = 16;
   projectNameField.placeholder = 'Enter Project Title';
   projectNameField.type = 'text';
@@ -147,6 +147,87 @@ function createProjectModal() { // Responsible for providing interface to add to
 function createTodoModal() { // Responsible for providing interface to add projects to project manager
   const modal = document.createElement('div');
   modal.id = 'todo-modal';
+
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+
+  const modalHeader = document.createElement('header');
+  modalHeader.classList.add('modal-header');
+
+  const modalTitle = document.createElement('h4');
+  modalTitle.textContent = 'Add a new Todo:';
+
+  const closeModalBtn = new Image();
+  closeModalBtn.id = 'tmodal-close';
+  closeModalBtn.classList.add('close-modal');
+  closeModalBtn.src = closeIcon;
+
+  modalHeader.appendChild(modalTitle);
+  modalHeader.appendChild(closeModalBtn);
+
+  const modalForm = document.createElement('form');
+
+  const todoNameLabel = document.createElement('label');
+  todoNameLabel.textContent = 'Task Name:';
+  const todoNameField = document.createElement('input');
+  todoNameField.placeholder = 'eg: Go get groceries';
+  todoNameField.id = 'tmodal-title';
+  todoNameField.size = 50;
+
+  const todoDescriptionLabel = document.createElement('label');
+  todoDescriptionLabel.textContent = 'Task Description:';
+  const todoDescriptionField = document.createElement('textarea');
+  todoDescriptionField.placeholder = 'eg: Need eggs, milk, bread, potatoes, etc.';
+  todoDescriptionField.id = 'tmodal-description';
+  todoDescriptionField.cols = 50;
+  todoDescriptionField.rows = 5;
+
+  const todoDueDateLabel = document.createElement('label');
+  todoDueDateLabel.textContent = 'Task Deadline:';
+  const todoDueDateField = document.createElement('input');
+  todoDueDateField.type = 'date';
+  todoDueDateField.id = 'tmodal-deadline';
+
+  const todoPriorityLabel = document.createElement('label');
+  todoPriorityLabel.textContent = 'Task Priority:';
+  const todoPriorityField = document.createElement('select');
+  todoPriorityField.id = 'tmodal-priority';
+  todoPriorityField.name = 'todo-priority';
+
+  const todoPriorityLow = document.createElement('option');
+  todoPriorityLow.textContent = 'Low';
+  todoPriorityLow.value = 'low';
+  const todoPriorityMed = document.createElement('option');
+  todoPriorityMed.textContent = 'Medium';
+  todoPriorityMed.value = 'medium';
+  const todoPriorityHigh = document.createElement('option');
+  todoPriorityHigh.textContent = 'High';
+  todoPriorityHigh.value = 'high';
+
+  const modalSubmit = document.createElement('button');
+  modalSubmit.id = 'submit-todo';
+  modalSubmit.classList.add('submit-btn');
+  modalSubmit.type = 'button';
+  modalSubmit.textContent = 'Add Todo';
+
+  todoPriorityField.appendChild(todoPriorityLow);
+  todoPriorityField.appendChild(todoPriorityMed);
+  todoPriorityField.appendChild(todoPriorityHigh);
+
+  modalForm.appendChild(todoNameLabel);
+  modalForm.appendChild(todoNameField);
+  modalForm.appendChild(todoDescriptionLabel);
+  modalForm.appendChild(todoDescriptionField);
+  modalForm.appendChild(todoDueDateLabel);
+  modalForm.appendChild(todoDueDateField);
+  modalForm.appendChild(todoPriorityLabel);
+  modalForm.appendChild(todoPriorityField);
+  
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(modalForm);
+  modalContent.appendChild(modalSubmit);
+
+  modal.appendChild(modalContent);
 
   return modal;
 }

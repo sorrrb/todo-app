@@ -189,6 +189,7 @@ button:hover, .close-modal:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-decoration: underline;
 }
 
 .modal-content {
@@ -201,12 +202,38 @@ button:hover, .close-modal:hover {
   gap: 36px;
 }
 
+#todo-modal .modal-content {
+  margin: 10% auto;
+  width: 50%;
+}
+
 #project-modal input {
   padding: 4px 8px;
   border: 1px solid var(--modal-bg);
   border-radius: 6px;
   font-family: 'Quicksand';
   font-size: 1rem;
+}
+
+#todo-modal form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 4px;
+}
+
+#todo-modal label {
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+#todo-modal input, #todo-modal textarea, #todo-modal select {
+  font-family: 'Quicksand';
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--modal-bg);
+  border-radius: 6px;
 }
 
 .submit-btn {

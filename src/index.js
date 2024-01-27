@@ -63,6 +63,11 @@ function printProjectCards() {
   });
 }
 
+function handleTodos() {
+  const todos = document.querySelectorAll('div.todo-card');
+  console.log(todos);
+}
+
 function styleOtherProjects() { // Helper function
   const projectCards = document.querySelectorAll('div.project-card');
 
@@ -79,15 +84,27 @@ function handleProjects() { // Function that handles project tab switching and a
 
   projectCards.forEach((project) => {
     project.addEventListener('click', e => {
-      styleOtherProjects();
       if (e.target.classList.contains('delete-project')) return;
+      styleOtherProjects();
       const text = project.querySelector('p');
       text.style.textDecoration = 'underline';
       text.style.fontStyle = 'italic';
       text.style.fontWeight = 'bold';
+      projectManager.setActiveProject(project.dataset.id);
       // how do we determine what project was selected/clicked?
     })
   })
+}
+
+function resetModalFields() { // Resets modal form
+  const projectModalField = document.getElementById('pmodal-title');
+  projectModalField.value = '';
+
+  const todoModalTitle = document.getElementById('tmodal-title');
+  todoModalTitle.value = '';
+
+  const todoModalDescription = document.getElementById('tmodal-description');
+  todoModalDescription.value = '';
 }
 
 function handleState(state, bool) { // Function to style rules for page content and associated modals
@@ -109,15 +126,14 @@ function handleState(state, bool) { // Function to style rules for page content 
   }
 
   if (bool) { // Conditional to determine if DOM is updated
-    const formValue = document.getElementById('ptitle').value;
+    const formValue = document.getElementById('pmodal-title').value;
     const newProject = createProject(formValue, projects);
     projectManager.addProject(newProject);
     printProjectCards();
     handleProjects();
   }
 
-  const formField = document.getElementById('ptitle'); // Resets modal form
-  formField.value = '';
+  resetModalFields();
 }
 
 function manageEventListeners() {
@@ -138,8 +154,15 @@ function manageEventListeners() {
 
   const addTodoBtn = document.getElementById('create-todo'); // Skeleton for todo creation
   addTodoBtn.addEventListener('click', () => {
-    if (projectManager.getActiveProject()) console.log('Pass');
-    else console.log('Test fail');
+    if (!projectManager.getActiveProject()) alert('Select a Project!');
+    else {
+      handleState(2, false);
+    }
+  })
+
+  const closeTodoBtn = document.getElementById('tmodal-close');
+  closeTodoBtn.addEventListener('click', () => {
+    handleState(0, false);
   })
 }
 
