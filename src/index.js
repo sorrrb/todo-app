@@ -73,9 +73,7 @@ function styleOtherProjects() { // Helper function
 
   projectCards.forEach((card) => {
     const text = card.querySelector('p');
-    text.style.textDecoration = 'none';
-    text.style.fontStyle = 'normal';
-    text.style.fontWeight = '500';
+    if (text.classList.contains('active-project-text')) text.classList.toggle('active-project-text');
   })
 }
 
@@ -87,9 +85,7 @@ function handleProjects() { // Function that handles project tab switching and a
       if (e.target.classList.contains('delete-project')) return;
       styleOtherProjects();
       const text = project.querySelector('p');
-      text.style.textDecoration = 'underline';
-      text.style.fontStyle = 'italic';
-      text.style.fontWeight = 'bold';
+      text.classList.toggle('active-project-text');
       projectManager.setActiveProject(project.dataset.id);
       // how do we determine what project was selected/clicked?
     })
@@ -107,7 +103,7 @@ function resetModalFields() { // Resets modal form
   todoModalDescription.value = '';
 }
 
-function handleState(state, bool) { // Function to style rules for page content and associated modals
+function handleState(state, projBool, todoBool) { // Function to style rules for page content and associated modals
   const projectModal = document.getElementById('project-modal');
   const todoModal = document.getElementById('todo-modal');
   const projects = projectManager.getProjects().length;
@@ -125,13 +121,22 @@ function handleState(state, bool) { // Function to style rules for page content 
       break;
   }
 
-  if (bool) { // Conditional to determine if DOM is updated
+  if (projBool) { // Conditional to determine if DOM is updated after project is added
     const formValue = document.getElementById('pmodal-title').value;
+    if (!formValue) {
+      alert('You must enter a project name!');
+      return;
+    }
     const newProject = createProject(formValue, projects);
     projectManager.addProject(newProject);
     printProjectCards();
     handleProjects();
   }
+
+  if (todoBool) { // Conditional to determine if DOM is updated after todo is added
+
+  }
+
 
   resetModalFields();
 }
@@ -139,30 +144,30 @@ function handleState(state, bool) { // Function to style rules for page content 
 function manageEventListeners() {
   const addProjectBtn = document.getElementById('create-project');
   addProjectBtn.addEventListener('click', () => { // May change from anonymous to named function in same file for factorability
-    handleState(1, false);
+    handleState(1, false, false);
   })
 
   const closeProjectBtn = document.getElementById('pmodal-close');
   closeProjectBtn.addEventListener('click', () => {
-    handleState(0, false);
+    handleState(0, false, false);
   })
 
   const submitProjectBtn = document.getElementById('submit-project');
   submitProjectBtn.addEventListener('click', () => {
-    handleState(0, true);
+    handleState(0, true, false);
   })
 
   const addTodoBtn = document.getElementById('create-todo'); // Skeleton for todo creation
   addTodoBtn.addEventListener('click', () => {
     if (!projectManager.getActiveProject()) alert('Select a Project!');
     else {
-      handleState(2, false);
+      handleState(2, false, true);
     }
   })
 
   const closeTodoBtn = document.getElementById('tmodal-close');
   closeTodoBtn.addEventListener('click', () => {
-    handleState(0, false);
+    handleState(0, false, false);
   })
 }
 

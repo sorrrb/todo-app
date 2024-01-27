@@ -244,3 +244,11 @@ button:hover, .close-modal:hover {
   font-weight: bold;
   align-self: center;
 }
+
+.active-project-text {
+  text-decoration: underline;
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: bold;
+  padding-bottom: 6px;
+}
