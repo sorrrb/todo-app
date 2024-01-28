@@ -4,6 +4,58 @@ import Garbage from './assets/media/trash.svg';
 import loadPage from './modules/load';
 import { createTodo, createProject, projectManager } from './modules/task';
 
+const { format } = require("date-fns");
+
+function compareDateFn(a, b) {
+  return a.getDueDate() - b.getDueDate();
+}
+
+function compareNameFn(a, b) {
+  const nameA = a.getTitle().toUpperCase();
+  const nameB = b.getTitle().toUpperCase();
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+}
+
+function sortByName() {
+  if (projectManager.getActiveProject() === null) {
+    console.log('No Active Project Selected');
+    return;
+  }
+
+  const todos = projectManager.getActiveProject().getTodos();
+
+  todos.sort(compareNameFn);
+
+  projectManager.getActiveProject().clearTodos();
+  
+  todos.forEach((todo) => {
+    projectManager.getActiveProject().addTodo(todo)
+  });
+
+  printTodoCards();
+}
+
+function sortByDueDate() {
+  if (projectManager.getActiveProject() === null) {
+    console.log('No Active Project Selected');
+    return;
+  }
+
+  const todos = projectManager.getActiveProject().getTodos();
+
+  todos.sort(compareDateFn);
+
+  projectManager.getActiveProject().clearTodos();
+  
+  todos.forEach((todo) => {
+    projectManager.getActiveProject().addTodo(todo)
+  });
+
+  printTodoCards();
+}
+
 function removeProjectCard(projectObject) {
   projectManager.removeProject(projectObject);
   projectManager.setActiveProject(null);
@@ -18,26 +70,57 @@ function printTodoCards() {
   const todoList = (projectManager.getActiveProject() ? projectManager.getActiveProject().getTodos() : []);
   const todoQuantity = todoList.length;
   for (let i = 0; i < todoQuantity; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('todo-card');
+
     const newTodo = document.createElement('button');
     newTodo.type = 'button';
     newTodo.classList.add('todo-collapsible');
     newTodo.textContent = `${todoList[i].getTitle()}`;
 
-    const todoDescription = document.createElement('div');
-    todoDescription.textContent = `${todoList[i].getDescription()}`;
+    const dueDateObject = todoList[i].getDueDate();
 
-    const todoDueDate = document.createElement('div');
-    todoDueDate.textContent = `${todoList[i].getDueDate()}`;
+    const dueDate = document.createElement('div');
+    dueDate.classList.add('todo-duedate');
+    dueDate.textContent = format(dueDateObject, 'MM/dd/yyyy');
 
-    const todoPriority = document.createElement('div');
-    todoPriority.textContent = `${todoList[i].getPriority()}`;
+    switch(todoList[i].getPriority()) {
+      case 'low':
+        newTodo.classList.add('low-priority');
+        break;
+      case 'medium':
+        newTodo.classList.add('medium-priority');
+        break;
+      case 'high':
+        newTodo.classList.add('high-priority');
+        break;
+    }
 
-    newTodo.appendChild(todoDescription);
-    newTodo.appendChild(todoDueDate);
-    newTodo.appendChild(todoPriority);
+    const expandWrapper = document.createElement('div');
+    expandWrapper.classList.add('todo-expand');
 
-    reference.appendChild(newTodo);
+    const description = document.createElement('p');
+    description.classList.add('todo-description');
+    description.textContent = `${todoList[i].getDescription()}`;
+
+    expandWrapper.appendChild(description);
+
+    newTodo.appendChild(dueDate);
+
+    wrapper.appendChild(newTodo);
+    wrapper.appendChild(expandWrapper);
+
+    reference.appendChild(wrapper);
   }
+
+  const todoBtns = document.querySelectorAll('div.todo-card');
+  todoBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expandBlockElement = btn.querySelector('div.todo-expand');
+      if (expandBlockElement.style.display === 'block') expandBlockElement.style.display = 'none';
+      else expandBlockElement.style.display = 'block';
+    })
+  })
 }
 
 function printProjectCards() {
@@ -163,18 +246,25 @@ function handleState(state, projBool, todoBool) { // Function to style rules for
       alert('You must enter a project name!');
       return;
     }
+
     const newProject = createProject(formValue, projects);
+
     projectManager.addProject(newProject);
     projectManager.setActiveProject(null);
+
     printProjectCards();
     handleProjects();
     printTodoCards();
   }
 
   if (todoBool) { // Conditional to determine if DOM is updated after todo is added
-    const nameValue = document.getElementById('tmodal-title').value;
+    const nameValue = (document.getElementById('tmodal-title').value === '' ? 'Unnamed Task' : document.getElementById('tmodal-title').value);
+
     const descriptionValue = document.getElementById('tmodal-description').value;
-    const dueDateValue = document.getElementById('tmodal-deadline').value;
+
+    const dueDateRef = document.getElementById('tmodal-deadline').value;
+    const dueDateValue = new Date (dueDateRef.substring(0,4), dueDateRef.substring(5,7) - 1, dueDateRef.substring(8));
+
     const priorityValue = document.getElementById('tmodal-priority').value;
 
     const newTodo = createTodo(nameValue, descriptionValue, dueDateValue, priorityValue);
@@ -218,6 +308,16 @@ function manageEventListeners() {
   closeTodoBtn.addEventListener('click', () => {
     handleState(0, false, false);
   })
+
+  const sortDueDateBtn = document.getElementById('sort-duedate');
+  sortDueDateBtn.addEventListener('click', () => {
+    sortByDueDate();
+  })
+
+  const sortNameBtn = document.getElementById('sort-name');
+  sortNameBtn.addEventListener('click', () => {
+    sortByName();
+  });
 }
 
 function createDefaultProject() {

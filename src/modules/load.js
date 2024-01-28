@@ -51,11 +51,26 @@ function createDisplayMain() {
   createBtn.id = 'create-todo';
   createBtn.innerHTML = `Add a Todo &#10133;`;
 
+  const sortNameBtn = document.createElement('button');
+  sortNameBtn.id = 'sort-name';
+  sortNameBtn.innerHTML = `Sort by Name`;
+
+  const sortDueDateBtn = document.createElement('button');
+  sortDueDateBtn.id = 'sort-duedate';
+  sortDueDateBtn.innerHTML = `Sort by Due Date`;
+
+  const sortPriorityBtn = document.createElement('button');
+  sortPriorityBtn.id = 'sort-priority';
+  sortPriorityBtn.innerHTML = `Sort by Priority`;
+
   searchbarWrapper.appendChild(searchbarIcon);
   searchbarWrapper.append(searchbar);
 
   display.appendChild(searchbarWrapper);
   display.appendChild(createBtn);
+  display.appendChild(sortNameBtn);
+  display.appendChild(sortDueDateBtn);
+  display.appendChild(sortPriorityBtn);
 
   return display;
 }

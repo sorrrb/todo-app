@@ -10,7 +10,10 @@
   --button-contrast: #f5dd90;
   --accent-border: #fef3c7f5;
   --modal-bg: #00000050;
-  --border-opaque: #00000090
+  --border-opaque: #00000090;
+  --priority-low: #84cc16;
+  --priority-med: #fde047;
+  --priority-high: #b91c1c;
 }
 
 * {
@@ -39,7 +42,7 @@ button:hover, .close-modal:hover {
   text-decoration: underline;
 }
 
-.default-project img:hover {
+.default-project img:hover, #sort-priority {
   cursor: not-allowed;
 }
 
@@ -110,7 +113,7 @@ button:hover, .close-modal:hover {
 .project-card {
   justify-content: space-between;
   gap: 16px;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .project-card-left {
@@ -177,11 +180,13 @@ button:hover, .close-modal:hover {
   padding: 16px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
 .todo-collapsible {
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
+  gap: 16px;
   align-items: center;
   background-color: var(--side-bg);
   color: black;
@@ -191,8 +196,42 @@ button:hover, .close-modal:hover {
   border: 1px solid var(--modal-bg);
   text-align: left;
   outline: none;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
+.todo-description {
+  overflow: hidden;
+}
+
+.todo-duedate {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.todo-expand {
+  padding: 8px 24px;
+  display: none;
+  overflow: hidden;
+  background-color: var(--modal-bg);
+  border: 1px solid var(--modal-bg);
+  border-top: none;
+}
+
+.low-priority {
+  border: 1px solid var(--priority-low);
+  border-left: 6px solid var(--priority-low);
+}
+
+.medium-priority {
+  border: 1px solid var(--priority-med);
+  border-left: 6px solid var(--priority-med);
+}
+
+.high-priority {
+  border: 1px solid var(--priority-high);
+  border-left: 6px solid var(--priority-high);
+}
 
 
 
@@ -271,8 +310,7 @@ button:hover, .close-modal:hover {
 
 .active-project-text {
   text-decoration: underline;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-style: italic;
   font-weight: bold;
-  padding-bottom: 6px;
 }

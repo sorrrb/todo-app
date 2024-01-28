@@ -32,12 +32,15 @@ function createProject(title, id) { // Responsible for creating Project objects 
     todos = todos.filter((todo) => todo !== todoObj);
   }
 
+  const clearTodos = () => todos = [];
+
   return {
     getTitle,
     getId,
     getTodos,
     addTodo,
-    removeTodo
+    removeTodo,
+    clearTodos
   }
 }
 
