@@ -195,6 +195,7 @@ button:hover, .close-modal:hover {
 
 .todo-collapsible-right {
   align-items: center;
+  gap: 12px;
 }
 
 .todo-title {
@@ -221,7 +222,6 @@ button:hover, .close-modal:hover {
 }
 
 .edit-icon {
-  margin-right: 24px;
   display: none;
 }
 

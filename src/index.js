@@ -9,6 +9,12 @@ import { createTodo, createProject, projectManager } from './modules/task';
 
 const { format } = require("date-fns");
 
+function removeTodoCard(todoObject) {
+  const currentProject = projectManager.getActiveProject();
+  currentProject.removeTodo(todoObject);
+  printTodoCards();
+}
+
 function removeProjectCard(projectObject) {
   projectManager.removeProject(projectObject);
   projectManager.setActiveProject(null);
@@ -112,6 +118,10 @@ function printTodoCards() {
     editIcon.src = DropdownEdit;
     editIcon.classList.add('edit-icon');
 
+    const deleteIcon = new Image();
+    deleteIcon.src = Garbage;
+    deleteIcon.classList.add('delete-todo');
+
     const expandIcon = new Image();
     expandIcon.src = DropdownPlus;
     expandIcon.classList.add('expand-icon');
@@ -121,12 +131,13 @@ function printTodoCards() {
 
     const description = document.createElement('p');
     description.classList.add('todo-description');
-    description.textContent = `${todoList[i].getDescription()}`;
+    description.textContent = `Notes: ${todoList[i].getDescription()}`;
 
     todoLeft.appendChild(todoTitle);
     todoLeft.appendChild(dueDate);
 
     todoRight.appendChild(editIcon);
+    todoRight.appendChild(deleteIcon);
     todoRight.appendChild(expandIcon);
 
     expandWrapper.appendChild(description);
@@ -144,10 +155,24 @@ function printTodoCards() {
   todoBtns.forEach((btn) => {
     btn.addEventListener('click', e => {
       const editIcon = btn.querySelector('img.edit-icon');
+      const deleteIcon = btn.querySelector('img.delete-todo');
+      
       if (e.target === editIcon) {
         console.log(`Editing: ${btn}`);
         return;
       };
+
+      if (e.target === deleteIcon) {
+        const todoIndex = Array.from(todoBtns).indexOf(btn);
+        if (todoIndex === -1) {
+          console.log('Error');
+          return;
+        }
+        const todos = projectManager.getActiveProject().getTodos();
+        removeTodoCard(todos[todoIndex]);
+        handleProjects();
+      }
+
       const expandBlockElement = btn.querySelector('div.todo-expand');
       const expandIcon = btn.querySelector('img.expand-icon');
       if (expandBlockElement.style.display === 'block') {
