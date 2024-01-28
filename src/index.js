@@ -6,7 +6,9 @@ import { createTodo, createProject, projectManager } from './modules/task';
 
 function removeProjectCard(projectObject) {
   projectManager.removeProject(projectObject);
+  projectManager.setActiveProject(null);
   printProjectCards();
+  printTodoCards();
 }
 
 function printTodoCards() {
