@@ -142,7 +142,12 @@ function printTodoCards() {
 
   const todoBtns = document.querySelectorAll('div.todo-card');
   todoBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', e => {
+      const editIcon = btn.querySelector('img.edit-icon');
+      if (e.target === editIcon) {
+        console.log(`Editing: ${btn}`);
+        return;
+      };
       const expandBlockElement = btn.querySelector('div.todo-expand');
       const expandIcon = btn.querySelector('img.expand-icon');
       if (expandBlockElement.style.display === 'block') {
@@ -307,7 +312,8 @@ function handleState(state, projBool, todoBool) { // Function to style rules for
     const descriptionValue = document.getElementById('tmodal-description').value;
 
     const dueDateRef = document.getElementById('tmodal-deadline').value;
-    const dueDateValue = new Date (dueDateRef.substring(0,4), dueDateRef.substring(5,7) - 1, dueDateRef.substring(8));
+    
+    const dueDateValue = (!dueDateRef ? new Date() : new Date (dueDateRef.substring(0,4), dueDateRef.substring(5,7) - 1, dueDateRef.substring(8)));
 
     const priorityValue = document.getElementById('tmodal-priority').value;
 
