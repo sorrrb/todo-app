@@ -149,24 +149,6 @@ button:hover, .close-modal:hover {
   border-bottom: 1px solid var(--modal-bg);
 }
 
-#todo-search {
-  padding-inline-start: 18px;
-  padding-block: 2px;
-  font-family: 'Quicksand';
-  font-size: 1rem;
-  font-weight: 500;
-  border: 1px solid var(--border-opaque);
-  border-radius: 4px;
-}
-
-#searchbar-icon {
-  height: 20px;
-  width: 20px;
-  padding-top: 6px;
-  position: absolute;
-  pointer-events: none;
-}
-
 #todo-menu > button {
   font-size: 0.75rem;
   font-weight: bold;
@@ -183,9 +165,13 @@ button:hover, .close-modal:hover {
   gap: 8px;
 }
 
+#create-todo {
+  margin-right: 24px;
+}
+
 .todo-collapsible {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   gap: 16px;
   align-items: center;
   background-color: var(--side-bg);
@@ -196,6 +182,22 @@ button:hover, .close-modal:hover {
   border: 1px solid var(--modal-bg);
   text-align: left;
   outline: none;
+}
+
+.todo-collapsible-left, .todo-collapsible-right {
+  display: flex;
+}
+
+.todo-collapsible-left {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.todo-collapsible-right {
+  align-items: center;
+}
+
+.todo-title {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -216,6 +218,11 @@ button:hover, .close-modal:hover {
   background-color: var(--modal-bg);
   border: 1px solid var(--modal-bg);
   border-top: none;
+}
+
+.edit-icon {
+  margin-right: 24px;
+  display: none;
 }
 
 .low-priority {
@@ -259,7 +266,7 @@ button:hover, .close-modal:hover {
   background-color: var(--main-bg);
   margin: 15% auto;
   padding: 20px;
-  width: 30%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   gap: 36px;
@@ -267,7 +274,6 @@ button:hover, .close-modal:hover {
 
 #todo-modal .modal-content {
   margin: 10% auto;
-  width: 50%;
 }
 
 #project-modal input {
@@ -297,6 +303,18 @@ button:hover, .close-modal:hover {
   padding: 4px 8px;
   border: 1px solid var(--modal-bg);
   border-radius: 6px;
+}
+
+#tmodal-title, #tmodal-description {
+  width: 60%;
+}
+
+#tmodal-deadline {
+  width: 40%;
+}
+
+#tmodal-priority {
+  width: 20%;
 }
 
 .submit-btn {

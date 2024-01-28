@@ -1,10 +1,20 @@
 import './style.css';
 import ProjectFolder from './assets/media/folder.svg';
 import Garbage from './assets/media/trash.svg';
+import DropdownPlus from './assets/media/plus.svg';
+import DropdownMinus from './assets/media/minus.svg';
+import DropdownEdit from './assets/media/edit.svg';
 import loadPage from './modules/load';
 import { createTodo, createProject, projectManager } from './modules/task';
 
 const { format } = require("date-fns");
+
+function removeProjectCard(projectObject) {
+  projectManager.removeProject(projectObject);
+  projectManager.setActiveProject(null);
+  printProjectCards();
+  printTodoCards();
+}
 
 function compareDateFn(a, b) {
   return a.getDueDate() - b.getDueDate();
@@ -56,13 +66,6 @@ function sortByDueDate() {
   printTodoCards();
 }
 
-function removeProjectCard(projectObject) {
-  projectManager.removeProject(projectObject);
-  projectManager.setActiveProject(null);
-  printProjectCards();
-  printTodoCards();
-}
-
 function printTodoCards() {
   const reference = document.getElementById('todos-container');
   reference.innerHTML = '';
@@ -76,13 +79,19 @@ function printTodoCards() {
     const newTodo = document.createElement('button');
     newTodo.type = 'button';
     newTodo.classList.add('todo-collapsible');
-    newTodo.textContent = `${todoList[i].getTitle()}`;
+
+    const todoLeft = document.createElement('div');
+    todoLeft.classList.add('todo-collapsible-left');
+
+    const todoTitle = document.createElement('h4');
+    todoTitle.classList.add('todo-title');
+    todoTitle.textContent = `${todoList[i].getTitle()}`;
 
     const dueDateObject = todoList[i].getDueDate();
 
     const dueDate = document.createElement('div');
     dueDate.classList.add('todo-duedate');
-    dueDate.textContent = format(dueDateObject, 'MM/dd/yyyy');
+    dueDate.textContent = `Due: ${format(dueDateObject, 'MM/dd/yyyy')}`;
 
     switch(todoList[i].getPriority()) {
       case 'low':
@@ -96,6 +105,17 @@ function printTodoCards() {
         break;
     }
 
+    const todoRight = document.createElement('div');
+    todoRight.classList.add('todo-collapsible-right');
+
+    const editIcon = new Image();
+    editIcon.src = DropdownEdit;
+    editIcon.classList.add('edit-icon');
+
+    const expandIcon = new Image();
+    expandIcon.src = DropdownPlus;
+    expandIcon.classList.add('expand-icon');
+
     const expandWrapper = document.createElement('div');
     expandWrapper.classList.add('todo-expand');
 
@@ -103,9 +123,16 @@ function printTodoCards() {
     description.classList.add('todo-description');
     description.textContent = `${todoList[i].getDescription()}`;
 
+    todoLeft.appendChild(todoTitle);
+    todoLeft.appendChild(dueDate);
+
+    todoRight.appendChild(editIcon);
+    todoRight.appendChild(expandIcon);
+
     expandWrapper.appendChild(description);
 
-    newTodo.appendChild(dueDate);
+    newTodo.appendChild(todoLeft);
+    newTodo.appendChild(todoRight);
 
     wrapper.appendChild(newTodo);
     wrapper.appendChild(expandWrapper);
@@ -117,10 +144,27 @@ function printTodoCards() {
   todoBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const expandBlockElement = btn.querySelector('div.todo-expand');
-      if (expandBlockElement.style.display === 'block') expandBlockElement.style.display = 'none';
-      else expandBlockElement.style.display = 'block';
+      const expandIcon = btn.querySelector('img.expand-icon');
+      if (expandBlockElement.style.display === 'block') {
+        expandBlockElement.style.display = 'none';
+        expandIcon.src = DropdownPlus;
+      }
+      else {
+        expandBlockElement.style.display = 'block';
+        expandIcon.src = DropdownMinus;
+      }
+    });
+
+    btn.addEventListener('mouseover', () => {
+      const editIcon = btn.querySelector('img.edit-icon');
+      editIcon.style.display = 'block';
+    });
+
+    btn.addEventListener('mouseout', () => {
+      const editIcon = btn.querySelector('img.edit-icon');
+      editIcon.style.display = 'none';
     })
-  })
+  });
 }
 
 function printProjectCards() {

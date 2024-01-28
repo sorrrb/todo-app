@@ -36,17 +36,6 @@ function createDisplayMain() {
   const display = document.createElement('nav');
   display.id = 'todo-menu';
 
-  const searchbarWrapper = document.createElement('div');
-  searchbarWrapper.id = 'searchbar-container';
-
-  const searchbarIcon = new Image();
-  searchbarIcon.src = searchIcon;
-  searchbarIcon.id = 'searchbar-icon';
-
-  const searchbar = document.createElement('input');
-  searchbar.type = 'searchbar';
-  searchbar.id = 'todo-search';
-
   const createBtn = document.createElement('button');
   createBtn.id = 'create-todo';
   createBtn.innerHTML = `Add a Todo &#10133;`;
@@ -63,10 +52,6 @@ function createDisplayMain() {
   sortPriorityBtn.id = 'sort-priority';
   sortPriorityBtn.innerHTML = `Sort by Priority`;
 
-  searchbarWrapper.appendChild(searchbarIcon);
-  searchbarWrapper.append(searchbar);
-
-  display.appendChild(searchbarWrapper);
   display.appendChild(createBtn);
   display.appendChild(sortNameBtn);
   display.appendChild(sortDueDateBtn);
@@ -191,15 +176,12 @@ function createTodoModal() { // Responsible for providing interface to add proje
   const todoNameField = document.createElement('input');
   todoNameField.placeholder = 'eg: Go get groceries';
   todoNameField.id = 'tmodal-title';
-  todoNameField.size = 50;
 
   const todoDescriptionLabel = document.createElement('label');
   todoDescriptionLabel.textContent = 'Task Description:';
   const todoDescriptionField = document.createElement('textarea');
   todoDescriptionField.placeholder = 'eg: Need eggs, milk, bread, potatoes, etc.';
   todoDescriptionField.id = 'tmodal-description';
-  todoDescriptionField.cols = 50;
-  todoDescriptionField.rows = 5;
 
   const todoDueDateLabel = document.createElement('label');
   todoDueDateLabel.textContent = 'Task Deadline:';
