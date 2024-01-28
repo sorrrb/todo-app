@@ -133,8 +133,8 @@ button:hover, .close-modal:hover {
 
 
 #display {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 #todo-menu {
@@ -171,6 +171,26 @@ button:hover, .close-modal:hover {
   border: 1px solid var(--border-opaque);
   border-radius: 4px;
   padding: 4px 8px;
+}
+
+#todos-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-collapsible {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--side-bg);
+  color: black;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: 1px solid var(--modal-bg);
+  text-align: left;
+  outline: none;
 }
 
 

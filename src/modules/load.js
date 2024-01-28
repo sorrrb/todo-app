@@ -91,7 +91,11 @@ function createMain() { // Responsible for generating elements for applet style/
 
   const displayMenu = createDisplayMain();
 
+  const displayTodoContainer = document.createElement('div');
+  displayTodoContainer.id = 'todos-container';
+
   display.appendChild(displayMenu);
+  display.appendChild(displayTodoContainer);
 
   main.appendChild(display);
 
@@ -247,14 +251,10 @@ function paintDisplay() { // Responsible for painting main display style
   webpage.appendChild(todoModal);
 }
 
-function updateDisplay() { // Responsible for updating display projects/todos
 
-}
 
 function loadPage() {
   paintDisplay();
-
-
 }
 
 export default loadPage;

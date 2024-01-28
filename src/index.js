@@ -9,12 +9,41 @@ function removeProjectCard(projectObject) {
   printProjectCards();
 }
 
+function printTodoCards() {
+  const reference = document.getElementById('todos-container');
+  reference.innerHTML = '';
+
+  const todoList = (projectManager.getActiveProject() ? projectManager.getActiveProject().getTodos() : []);
+  const todoQuantity = todoList.length;
+  for (let i = 0; i < todoQuantity; i++) {
+    const newTodo = document.createElement('button');
+    newTodo.type = 'button';
+    newTodo.classList.add('todo-collapsible');
+    newTodo.textContent = `${todoList[i].getTitle()}`;
+
+    const todoDescription = document.createElement('div');
+    todoDescription.textContent = `${todoList[i].getDescription()}`;
+
+    const todoDueDate = document.createElement('div');
+    todoDueDate.textContent = `${todoList[i].getDueDate()}`;
+
+    const todoPriority = document.createElement('div');
+    todoPriority.textContent = `${todoList[i].getPriority()}`;
+
+    newTodo.appendChild(todoDescription);
+    newTodo.appendChild(todoDueDate);
+    newTodo.appendChild(todoPriority);
+
+    reference.appendChild(newTodo);
+  }
+}
+
 function printProjectCards() {
   const reference = document.getElementById('projects-container');
   reference.innerHTML = '';
 
   const projectList = projectManager.getProjects();
-  const projectQuantity = projectManager.getProjects().length;
+  const projectQuantity = projectList.length;
   for (let i = 0; i < projectQuantity; i++) {
     const newCard = document.createElement('div');
     newCard.classList.add('project-card');
@@ -66,7 +95,7 @@ function printProjectCards() {
   });
 }
 
-function handleTodos() {
+function handleTodos() { // Function that may end up handling todo switching and style rules
   const todos = document.querySelectorAll('div.todo-card');
   console.log(todos);
 }
@@ -92,7 +121,7 @@ function handleProjects() { // Function that handles project tab switching and a
       const text = project.querySelector('p');
       text.classList.toggle('active-project-text');
       projectManager.setActiveProject(project.dataset.id);
-      // how do we determine what project was selected/clicked?
+      printTodoCards();
     })
   })
 }
@@ -134,14 +163,22 @@ function handleState(state, projBool, todoBool) { // Function to style rules for
     }
     const newProject = createProject(formValue, projects);
     projectManager.addProject(newProject);
+    projectManager.setActiveProject(null);
     printProjectCards();
     handleProjects();
+    printTodoCards();
   }
 
   if (todoBool) { // Conditional to determine if DOM is updated after todo is added
+    const nameValue = document.getElementById('tmodal-title').value;
+    const descriptionValue = document.getElementById('tmodal-description').value;
+    const dueDateValue = document.getElementById('tmodal-deadline').value;
+    const priorityValue = document.getElementById('tmodal-priority').value;
 
+    const newTodo = createTodo(nameValue, descriptionValue, dueDateValue, priorityValue);
+    projectManager.getActiveProject().addTodo(newTodo);
+    printTodoCards();
   }
-
 
   resetModalFields();
 }
@@ -166,8 +203,13 @@ function manageEventListeners() {
   addTodoBtn.addEventListener('click', () => {
     if (!projectManager.getActiveProject()) alert('Select a Project!');
     else {
-      handleState(2, false, true);
+      handleState(2, false, false);
     }
+  })
+
+  const submitTodoBtn = document.getElementById('submit-todo');
+  submitTodoBtn.addEventListener('click', () => {
+    handleState(0, false, true);
   })
 
   const closeTodoBtn = document.getElementById('tmodal-close');
