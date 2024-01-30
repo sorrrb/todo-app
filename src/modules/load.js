@@ -1,143 +1,119 @@
-import createIcon from '../assets/media/square-plus.svg'
-import closeIcon from '../assets/media/close.svg';
+import Logo from '../assets/media/book-open.svg';
+import AllIcon from '../assets/media/file-text.svg';
+import TodayIcon from '../assets/media/calendar.svg';
+import UpcomingIcon from '../assets/media/clock.svg';
+import ProjectIcon from '../assets/media/folder.svg';
 
-function createHeader() { // Responsible for generating elements for applet style
+// Page skeleton is loaded
+
+function createHeader() {
   const header = document.createElement('header');
   header.id = 'header';
+  
+  const title = document.createElement('div');
+  title.id = 'logo-container';
+  const text = document.createElement('h1');
+  text.textContent = 'TO-DO';
 
-  const title = document.createElement('h1');
-  title.textContent = 'To-Do';
-  title.id = 'page-title';
+  const logo = new Image();
+  logo.src = Logo;
 
+  title.appendChild(logo);
+  title.appendChild(text);
   header.appendChild(title);
 
   return header;
 }
 
-function createMainProjects() { // Helper responsible for generating sidebar elements
-  const projects = document.createElement('div');
-  projects.id = 'projects';
+function createProjectFolder(name, src) {
+  const folder = document.createElement('div');
+  folder.classList.add('project-folder');
 
-  const projectsTitle = document.createElement('h2');
-  projectsTitle.id = 'projects-title';
-  projectsTitle.textContent = 'Your Projects';
+  const icon = new Image();
+  icon.src = src;
 
-  const projectsContainer = document.createElement('div');
-  projectsContainer.id = 'projects-container';
+  const title = document.createElement('h3');
+  title.textContent = `${name}`;
 
-  projects.appendChild(projectsTitle);
-  projects.appendChild(projectsContainer);
+  folder.appendChild(icon);
+  folder.appendChild(title);
 
-  return projects;
+  return folder;
 }
 
-function createMain() { // Responsible for generating elements for applet style/functionality
+
+function createMain() {
   const main = document.createElement('main');
   main.id = 'main';
 
-  const sidebar = document.createElement('div');
+  const sidebar = document.createElement('section');
   sidebar.id = 'sidebar';
 
-  const projects = createMainProjects();
+  const systemProjects = document.createElement('div');
+  systemProjects.classList.add('project-container');
 
-  const addProjectBtn = document.createElement('button');
-  addProjectBtn.id = 'create-project';
+  const userProjects = document.createElement('div');
+  userProjects.classList.add('project-container');
 
-  const btnIcon = new Image();
-  btnIcon.src = createIcon;
+  const defaultFolder = document.createElement('div');
+  defaultFolder.id = 'system-projects';
 
-  const btnText = document.createElement('p');
-  btnText.textContent = 'Add New Project';
+  const personalFolder = document.createElement('div');
+  personalFolder.id = 'user-projects';
 
-  addProjectBtn.appendChild(btnText);
-  addProjectBtn.appendChild(btnIcon);
+  const allProjects = createProjectFolder('All', AllIcon);
+  const todayProjects = createProjectFolder('Today', TodayIcon);
+  const upcomingProjects = createProjectFolder('Upcoming', UpcomingIcon);
 
-  sidebar.appendChild(projects);
-  sidebar.appendChild(addProjectBtn);
+  defaultFolder.appendChild(allProjects);
+  defaultFolder.appendChild(todayProjects);
+  defaultFolder.appendChild(upcomingProjects);
+
+  const personalFolderTitle = document.createElement('h2');
+  personalFolderTitle.innerHTML = '&#9964; Your Projects &#9964;';
+
+  const defaultProjects = createProjectFolder('Default Project', ProjectIcon);
+
+  const userProjectsWrapper = document.createElement('div');
+  userProjectsWrapper.id = 'user-projects-wrapper';
+  userProjectsWrapper.appendChild(defaultProjects);
+
+  personalFolder.appendChild(personalFolderTitle);
+  personalFolder.appendChild(userProjectsWrapper);
+
+  systemProjects.appendChild(defaultFolder);
+  userProjects.appendChild(personalFolder);
+
+  const projectBtn = document.createElement('button');
+  projectBtn.id = 'create-project';
+  projectBtn.innerHTML = `&#43;`;
+  
+  sidebar.appendChild(systemProjects);
+  sidebar.appendChild(userProjects);
+  sidebar.appendChild(projectBtn);
+
+  const display = document.createElement('section');
+  display.id = 'display';
 
   main.appendChild(sidebar);
-
-  const display = document.createElement('div');
-  display.id = 'display';
   main.appendChild(display);
 
   return main;
 }
 
-function createProjectModal() { // Responsible for providing interface to add to-dos to projects
-  const modal = document.createElement('div');
-  modal.id = 'project-modal';
 
-  const modalContent = document.createElement('div');
-  modalContent.classList.add('modal-content');
+function loadPage() { // Responsible for generating page skeleton and appending to document body
+  const pages = [];
 
-  const modalHeader = document.createElement('header');
-  modalHeader.classList.add('modal-header');
-
-  const modalTitle = document.createElement('h4');
-  modalTitle.textContent = 'Add a new Project:';
-
-  const closeModalBtn = new Image();
-  closeModalBtn.id = 'pmodal-close';
-  closeModalBtn.classList.add('close-modal');
-  closeModalBtn.src = closeIcon;
-
-  modalHeader.appendChild(modalTitle);
-  modalHeader.appendChild(closeModalBtn);
-
-  const modalForm = document.createElement('form');
-  const projectNameField = document.createElement('input');
-  projectNameField.id = 'ptitle';
-  projectNameField.placeholder = 'Enter Project Title';
-  projectNameField.type = 'text';
-
-  const modalSubmit = document.createElement('button');
-  modalSubmit.id = 'submit-project';
-  modalSubmit.classList.add('submit-btn');
-  modalSubmit.type = 'button';
-  modalSubmit.textContent = 'Add Project';
-
-  modalForm.appendChild(projectNameField);
-
-  modalContent.appendChild(modalHeader);
-  modalContent.appendChild(modalForm);
-  modalContent.appendChild(modalSubmit);
-
-  modal.appendChild(modalContent);
-
-  return modal;
-}
-
-function createTodoModal() { // Responsible for providing interface to add projects to project manager
-  const modal = document.createElement('div');
-  modal.id = 'todo-modal';
-
-  return modal;
-}
-
-
-
-function paintDisplay() { // Responsible for painting main display style
   const header = createHeader();
   const main = createMain();
-  const projectModal = createProjectModal();
-  const todoModal = createTodoModal();
 
-  const webpage = document.body;
-  webpage.appendChild(header);
-  webpage.appendChild(main);
-  webpage.appendChild(projectModal);
-  webpage.appendChild(todoModal);
-}
+  pages.push(header);
+  pages.push(main);
 
-function updateDisplay() { // Responsible for updating display projects/todos
-
-}
-
-function loadPage() {
-  paintDisplay();
-
-
+  pages.forEach((page) => {
+    document.body.appendChild(page);
+  })
 }
 
 export default loadPage;
