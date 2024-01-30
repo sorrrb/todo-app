@@ -2,7 +2,17 @@ import Logo from '../assets/media/book-open.svg';
 import AllIcon from '../assets/media/file-text.svg';
 import TodayIcon from '../assets/media/calendar.svg';
 import UpcomingIcon from '../assets/media/clock.svg';
+import UrgentIcon from '../assets/media/alert-circle.svg';
+import CompletedIcon from '../assets/media/check-square.svg';
 import ProjectIcon from '../assets/media/folder.svg';
+
+// Helper function to capitalize string
+function capitalize(string) {
+  const firstLetter = string.charAt(0);
+  const remainingLetters = string.slice(1);
+
+  return firstLetter.toUpperCase() + remainingLetters;
+}
 
 // Page skeleton is loaded
 
@@ -33,13 +43,16 @@ function createProjectFolder(name, src) {
   icon.src = src;
 
   const title = document.createElement('h3');
-  title.textContent = `${name}`;
+
+  title.textContent = `${capitalize(name)}`;
 
   folder.appendChild(icon);
   folder.appendChild(title);
 
   return folder;
 }
+
+
 
 
 function createMain() {
@@ -49,48 +62,40 @@ function createMain() {
   const sidebar = document.createElement('section');
   sidebar.id = 'sidebar';
 
-  const systemProjects = document.createElement('div');
-  systemProjects.classList.add('project-container');
+  const systemNav = document.createElement('div');
+  systemNav.id = 'system-projects';
 
-  const userProjects = document.createElement('div');
-  userProjects.classList.add('project-container');
+  const userNav = document.createElement('div');
+  userNav.id = 'user-projects';
 
-  const defaultFolder = document.createElement('div');
-  defaultFolder.id = 'system-projects';
+  const systemProjects = {
+    all: AllIcon,
+    today: TodayIcon,
+    upcoming: UpcomingIcon,
+    urgent: UrgentIcon,
+    completed: CompletedIcon
+  }
 
-  const personalFolder = document.createElement('div');
-  personalFolder.id = 'user-projects';
+  for (const prop in systemProjects) {
+    const systemFolder = createProjectFolder(prop, systemProjects[prop]);
+    systemNav.appendChild(systemFolder);
+  }
 
-  const allProjects = createProjectFolder('All', AllIcon);
-  const todayProjects = createProjectFolder('Today', TodayIcon);
-  const upcomingProjects = createProjectFolder('Upcoming', UpcomingIcon);
+  const userProjectsHeader = document.createElement('header');
+  userProjectsHeader.id = 'projects-info';
+  const userProjectsText = document.createElement('h3');
+  userProjectsText.textContent = 'Your Projects (0)';
+  const userProjectsButton = document.createElement('button');
+  userProjectsButton.id = 'create-project';
+  userProjectsButton.innerHTML = '&#128933;';
 
-  defaultFolder.appendChild(allProjects);
-  defaultFolder.appendChild(todayProjects);
-  defaultFolder.appendChild(upcomingProjects);
+  userProjectsHeader.appendChild(userProjectsText);
+  userProjectsHeader.appendChild(userProjectsButton);
 
-  const personalFolderTitle = document.createElement('h2');
-  personalFolderTitle.innerHTML = '&#9964; Your Projects &#9964;';
+  userNav.appendChild(userProjectsHeader);
 
-  const defaultProjects = createProjectFolder('Default Project', ProjectIcon);
-
-  const userProjectsWrapper = document.createElement('div');
-  userProjectsWrapper.id = 'user-projects-wrapper';
-  userProjectsWrapper.appendChild(defaultProjects);
-
-  personalFolder.appendChild(personalFolderTitle);
-  personalFolder.appendChild(userProjectsWrapper);
-
-  systemProjects.appendChild(defaultFolder);
-  userProjects.appendChild(personalFolder);
-
-  const projectBtn = document.createElement('button');
-  projectBtn.id = 'create-project';
-  projectBtn.innerHTML = `&#43;`;
-  
-  sidebar.appendChild(systemProjects);
-  sidebar.appendChild(userProjects);
-  sidebar.appendChild(projectBtn);
+  sidebar.appendChild(systemNav);
+  sidebar.appendChild(userNav);
 
   const display = document.createElement('section');
   display.id = 'display';
@@ -102,14 +107,33 @@ function createMain() {
 }
 
 
+
+
+function createModal() {
+  const modal = document.createElement('div');
+  modal.id = 'modal';
+
+  const content = document.createElement('section');
+  content.classList.add('modal-content');
+
+  modal.appendChild(content);
+
+  return modal;
+}
+
+
+
+
 function loadPage() { // Responsible for generating page skeleton and appending to document body
   const pages = [];
 
   const header = createHeader();
   const main = createMain();
+  const modal = createModal();
 
   pages.push(header);
   pages.push(main);
+  pages.push(modal);
 
   pages.forEach((page) => {
     document.body.appendChild(page);
