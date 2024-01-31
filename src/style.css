@@ -32,7 +32,7 @@ body {
 
 
 
-.project-folder, #create-project, #create-todo, #close-modal, #submit-modal, #cancel-modal {
+.project-folder, #create-project, #create-todo, #close-modal, #submit-modal, #cancel-modal, .collapsible-wrapper {
   cursor: pointer;
 }
 
@@ -128,8 +128,15 @@ body {
   grid-template-rows: auto 1fr;
 }
 
+#display-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 #todos-info {
   padding-bottom: 24px;
+  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,6 +146,40 @@ body {
 
 #todos-info > div {
   display: flex;
+}
+
+.collapsible-content, .todo-folder {
+  padding-left: 12px;
+}
+
+.collapsible-folder, .collapsible-content {
+  padding: 4px 8px;
+  overflow: hidden;
+}
+
+.collapsible-content {
+  background-color: var(--divider);
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.todo-folder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--section-border);
+}
+
+.project-folder-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 
@@ -167,7 +208,15 @@ body {
   border-radius: 6px;
   background-color: var(--main-bg);
   margin: 15% auto;
-  width: 25%;
+  width: 30%;
+}
+
+
+@media (max-width: 1500px) {
+  #modal-content {
+    width: 50%;
+  }
+
 }
 
 #modal-content > * {
@@ -237,4 +286,16 @@ body {
 
 #cancel-modal {
   background-color: var(--cancel);
+}
+
+.low-priority {
+  border-left: 8px solid green;
+}
+
+.med-priority {
+  border-left: 8px solid yellow;
+}
+
+.high-priority {
+  border-left: 8px solid red;
 }

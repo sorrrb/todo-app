@@ -5,6 +5,7 @@ import TodayIcon from '../assets/media/calendar.svg';
 import UpcomingIcon from '../assets/media/clock.svg';
 import UrgentIcon from '../assets/media/alert-circle.svg';
 import CompletedIcon from '../assets/media/check-square.svg';
+import { format } from 'date-fns';
 
 // Helper function to capitalize string
 function capitalize(string) {
@@ -12,6 +13,17 @@ function capitalize(string) {
   const remainingLetters = string.slice(1);
 
   return firstLetter.toUpperCase() + remainingLetters;
+}
+
+// Helper function to create Date Object from given duedate string
+function createDate(string) {
+  const year = string.slice(0, 4);
+  const month = string.slice(5, 7);
+  const day = string.slice(8);
+
+  const date = new Date(year, month - 1, day);
+
+  return date;
 }
 
 // Page skeleton is loaded
@@ -52,6 +64,77 @@ export function createProjectFolder(name, src, dataId) {
   folder.appendChild(title);
 
   return folder;
+}
+
+export function createTodoFolder(name, description, deadline, priority) { // START HERE - NEED PARAMETERS
+  const container = document.createElement('div');
+  container.classList.add('collapsible-wrapper');
+
+  const folder = document.createElement('div');
+  folder.classList.add('collapsible-folder');
+  folder.classList.add('todo-folder');
+
+  const title = document.createElement('h4');
+  title.textContent = name;
+  title.style.textDecoration = 'underline';
+
+  const notes = document.createElement('p');
+  notes.textContent = description;
+
+  const dueDate = document.createElement('p');
+ 
+  if (deadline === '') {
+    const today = new Date();
+    dueDate.textContent = format(today, "MM/dd/yyyy");
+  }
+
+  else {
+    const dateFormat = createDate(deadline);
+    dueDate.textContent = format(dateFormat, "MM/dd/yyyy");
+  }
+
+  switch(priority) {
+    case 'low':
+      folder.classList.add('low-priority');
+      break;
+    case 'med':
+      folder.classList.add('med-priority');
+      break;
+    case 'high':
+      folder.classList.add('high-priority');
+      break;
+  }
+
+  const folderLeft = document.createElement('div');
+  folderLeft.classList.add('project-folder-left');
+
+  const folderRight = document.createElement('div');
+  folderRight.classList.add('project-folder-right');
+
+  const expandIcon = document.createElement('h1');
+  expandIcon.innerHTML = '&plus;';
+
+  const collapsible = document.createElement('div');
+  collapsible.classList.add('collapsible-content');
+  collapsible.classList.add('hidden');
+
+  const descriptionExpand = document.createElement('p');
+  descriptionExpand.textContent = description;
+
+  collapsible.appendChild(descriptionExpand);
+
+  folderLeft.appendChild(title);
+  folderLeft.appendChild(dueDate);
+
+  folderRight.appendChild(expandIcon);
+
+  folder.appendChild(folderLeft);
+  folder.appendChild(folderRight);
+
+  container.appendChild(folder);
+  container.appendChild(collapsible);
+
+  return container;
 }
 
 export function createTodoHeader(todoQuantity, name) {

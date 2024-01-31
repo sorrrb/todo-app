@@ -1,7 +1,7 @@
 import CloseIcon from '../assets/media/close.svg';
 import FolderIcon from '../assets/media/folder.svg';
 import { projectManager, createProject, createTodo } from '../modules/task';
-import { createProjectFolder, createProjectHeader, createTodoHeader } from '../modules/load';
+import { createProjectFolder, createProjectHeader, createTodoFolder, createTodoHeader } from '../modules/load';
 
 
 
@@ -41,7 +41,9 @@ function generateTodoFolders() {
     content.appendChild(header);
     
     folders.forEach((folder) => {
-      console.log('LOL');
+      const tab = createTodoFolder(folder.getTitle(), folder.getDescription(), folder.getDueDate(), folder.getPriority());
+      tab.addEventListener('click', tabHandler);
+      content.appendChild(tab);
     })
   }
 }
@@ -299,19 +301,35 @@ function createHandler() { // Handles logic after pressing create project button
 
 
 function tabHandler() { // Handles logic after pressing project folder buttons
+  if (this.classList.contains('collapsible-wrapper')) {
+    if (this.lastElementChild.classList.contains('hidden')) {
+      this.lastElementChild.classList.toggle('hidden');
+      this.lastElementChild.classList.toggle('visible');
+      this.querySelector('h1').innerHTML = '	&minus;';
+    }
+
+    else if (this.lastElementChild.classList.contains('visible')) {
+      this.lastElementChild.classList.toggle('visible');
+      this.lastElementChild.classList.toggle('hidden');
+      this.querySelector('h1').innerHTML = '&plus;';
+    }
+
+    return;
+  }
+
   const projects = document.querySelectorAll('div.project-folder');
   projects.forEach((project) => {
     if (project.classList.contains('active-folder')) project.classList.toggle('active-folder');
   });
   this.classList.toggle('active-folder');
 
-  if (this.hasAttribute('data-index')) {
+  if (this.hasAttribute('data-index')) { // If tab clicked is user project
     const projectList = projectManager.getProjects();
     displayManager.setActiveTab(projectList[this.dataset.index]);
     generateTodoFolders();
   }
   
-  else {
+  else { // If tab clicked is system project
     displayManager.setActiveTab(this.querySelector('h3').textContent);
     console.log(displayManager.getActiveTab());
   }
