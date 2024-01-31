@@ -1,10 +1,10 @@
 import './style.css';
-import ProjectFolder from './assets/media/folder.svg';
-import Garbage from './assets/media/trash.svg';
-import loadPage from './modules/load';
+import { loadPage } from './modules/load';
+import { manageEventListeners } from './modules/handlers';
 
 function init() { // Main screen controller function
   loadPage();
+  manageEventListeners();
 }
 
 init(); // Screen controller call

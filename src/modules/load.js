@@ -1,10 +1,10 @@
 import Logo from '../assets/media/book-open.svg';
+import AddIcon from '../assets/media/plus-circle.svg';
 import AllIcon from '../assets/media/file-text.svg';
 import TodayIcon from '../assets/media/calendar.svg';
 import UpcomingIcon from '../assets/media/clock.svg';
 import UrgentIcon from '../assets/media/alert-circle.svg';
 import CompletedIcon from '../assets/media/check-square.svg';
-import ProjectIcon from '../assets/media/folder.svg';
 
 // Helper function to capitalize string
 function capitalize(string) {
@@ -35,9 +35,11 @@ function createHeader() {
   return header;
 }
 
-function createProjectFolder(name, src) {
+export function createProjectFolder(name, src, dataId) {
   const folder = document.createElement('div');
   folder.classList.add('project-folder');
+
+  if (typeof(dataId) === 'number') folder.dataset.index = dataId;
 
   const icon = new Image();
   icon.src = src;
@@ -52,6 +54,26 @@ function createProjectFolder(name, src) {
   return folder;
 }
 
+export function createProjectHeader(projectQuantity) {
+  const header = document.createElement('header');
+  header.id = 'projects-info';
+
+  const text = document.createElement('h3');
+  text.textContent = `Your Projects (${projectQuantity})`;
+
+  const btn = document.createElement('button');
+  btn.id = 'create-project';
+  
+  const img = new Image();
+  img.src = AddIcon;
+
+  btn.appendChild(img);
+
+  header.appendChild(text);
+  header.appendChild(btn);
+
+  return header;
+}
 
 
 
@@ -81,16 +103,7 @@ function createMain() {
     systemNav.appendChild(systemFolder);
   }
 
-  const userProjectsHeader = document.createElement('header');
-  userProjectsHeader.id = 'projects-info';
-  const userProjectsText = document.createElement('h3');
-  userProjectsText.textContent = 'Your Projects (0)';
-  const userProjectsButton = document.createElement('button');
-  userProjectsButton.id = 'create-project';
-  userProjectsButton.innerHTML = '&#128933;';
-
-  userProjectsHeader.appendChild(userProjectsText);
-  userProjectsHeader.appendChild(userProjectsButton);
+  const userProjectsHeader = createProjectHeader(0); 
 
   userNav.appendChild(userProjectsHeader);
 
@@ -99,6 +112,9 @@ function createMain() {
 
   const display = document.createElement('section');
   display.id = 'display';
+
+  const displayNav = document.createElement('div');
+  displayNav.id = 'project-info';
 
   main.appendChild(sidebar);
   main.appendChild(display);
@@ -112,9 +128,10 @@ function createMain() {
 function createModal() {
   const modal = document.createElement('div');
   modal.id = 'modal';
+  modal.classList.add('inactive');
 
-  const content = document.createElement('section');
-  content.classList.add('modal-content');
+  const content = document.createElement('div');
+  content.id = 'modal-content';
 
   modal.appendChild(content);
 
@@ -124,7 +141,7 @@ function createModal() {
 
 
 
-function loadPage() { // Responsible for generating page skeleton and appending to document body
+export function loadPage() { // Responsible for generating page skeleton and appending to document body
   const pages = [];
 
   const header = createHeader();
@@ -139,5 +156,3 @@ function loadPage() { // Responsible for generating page skeleton and appending 
     document.body.appendChild(page);
   })
 }
-
-export default loadPage;
