@@ -32,7 +32,7 @@ body {
 
 
 
-.project-folder, #create-project, #close-modal, #submit-modal, #cancel-modal {
+.project-folder, #create-project, #create-todo, #close-modal, #submit-modal, #cancel-modal {
   cursor: pointer;
 }
 
@@ -123,19 +123,24 @@ body {
 }
 
 #display {
+  padding: 16px;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 #todos-info {
+  padding-bottom: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--divider);
 }
 
-#todos-controls {
+#todos-info > div {
   display: flex;
 }
+
 
 
 #modal {
@@ -190,7 +195,7 @@ body {
   color: var(--text-accent);
 }
 
-#modal-content > form input {
+#modal-content > form input, #modal-content > form textarea, #modal-content > form select {
   padding: 8px 12px;
   align-self: flex-start;
   border: 1px solid var(--opaque);

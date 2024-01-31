@@ -54,6 +54,52 @@ export function createProjectFolder(name, src, dataId) {
   return folder;
 }
 
+export function createTodoHeader(todoQuantity, name) {
+  const header = document.createElement('header');
+  header.id = 'todos-info';
+
+  const text = document.createElement('h2');
+  text.textContent = `Tasks (${todoQuantity})`;
+
+  const projectTab = document.createElement('div');
+  
+  const tabIcon = new Image();
+
+  switch(name) {
+    case 'All':
+      tabIcon.src = AllIcon;
+      break;
+    case 'Today':
+      tabIcon.src = TodayIcon;
+      break;
+    case 'Upcoming':
+      tabIcon.src = UpcomingIcon;
+      break;
+    case 'Urgent':
+      tabIcon.src = UrgentIcon;
+      break;
+    case 'Completed':
+      tabIcon.src = CompletedIcon;
+      break;
+  }
+
+  const tabName = document.createElement('h2');
+  tabName.textContent = name;
+
+  const createIcon = new Image();
+  createIcon.id = 'create-todo';
+  createIcon.src = AddIcon;
+
+  projectTab.appendChild(tabIcon);
+  projectTab.appendChild(tabName);
+
+  header.appendChild(projectTab);
+  header.appendChild(text);
+  header.appendChild(createIcon);
+
+  return header;
+}
+
 export function createProjectHeader(projectQuantity) {
   const header = document.createElement('header');
   header.id = 'projects-info';
@@ -114,7 +160,17 @@ function createMain() {
   display.id = 'display';
 
   const displayNav = document.createElement('div');
-  displayNav.id = 'project-info';
+  displayNav.id = 'display-controls';
+
+  const displayHeader = createTodoHeader(0, 'All');
+
+  const displayTodos = document.createElement('div');
+  displayTodos.id = 'user-todos';
+
+  displayNav.appendChild(displayHeader);
+
+  display.appendChild(displayNav);
+  display.appendChild(displayTodos);
 
   main.appendChild(sidebar);
   main.appendChild(display);
