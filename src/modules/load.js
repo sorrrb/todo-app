@@ -5,6 +5,7 @@ import TodayIcon from '../assets/media/calendar.svg';
 import UpcomingIcon from '../assets/media/clock.svg';
 import UrgentIcon from '../assets/media/alert-circle.svg';
 import CompletedIcon from '../assets/media/check-square.svg';
+import FolderIcon from '../assets/media/folder.svg';
 import { format } from 'date-fns';
 
 // Helper function to capitalize string
@@ -119,7 +120,7 @@ export function createTodoFolder(name, description, deadline, priority) { // STA
   collapsible.classList.add('hidden');
 
   const descriptionExpand = document.createElement('p');
-  descriptionExpand.textContent = description;
+  descriptionExpand.textContent = (description === '' ? 'N/A' : description);
 
   collapsible.appendChild(descriptionExpand);
 
@@ -163,6 +164,9 @@ export function createTodoHeader(todoQuantity, name) {
       break;
     case 'Completed':
       tabIcon.src = CompletedIcon;
+      break;
+    default:
+      tabIcon.src = FolderIcon;
       break;
   }
 

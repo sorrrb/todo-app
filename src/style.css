@@ -146,10 +146,7 @@ body {
 
 #todos-info > div {
   display: flex;
-}
-
-.collapsible-content, .todo-folder {
-  padding-left: 12px;
+  gap: 6px;
 }
 
 .collapsible-folder, .collapsible-content {
@@ -158,7 +155,10 @@ body {
 }
 
 .collapsible-content {
+  padding: 16px 24px;
   background-color: var(--divider);
+  color: var(--main-bg);
+  font-weight: bold;
 }
 
 .hidden {
@@ -170,6 +170,7 @@ body {
 }
 
 .todo-folder {
+  padding-left: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;

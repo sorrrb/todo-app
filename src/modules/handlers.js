@@ -33,7 +33,17 @@ function generateTodoFolders() {
   const content = document.getElementById('display-controls');
   content.innerHTML = '';
 
-  if (typeof(displayManager.getActiveTab() === 'object')) {
+  const system = ['All', 'Today', 'Upcoming', 'Urgent', 'Completed'];
+
+  if (system.includes(displayManager.getActiveTab())) {
+    const foldersName = displayManager.getActiveTab();
+    const folders = []; // Hard code empty array for now
+
+    const header = createTodoHeader(folders.length, foldersName);
+    content.appendChild(header);
+  }
+
+  else {
     const foldersName = displayManager.getActiveTab().getTitle();
     const folders = displayManager.getActiveTab().getTodos();
 
@@ -331,7 +341,7 @@ function tabHandler() { // Handles logic after pressing project folder buttons
   
   else { // If tab clicked is system project
     displayManager.setActiveTab(this.querySelector('h3').textContent);
-    console.log(displayManager.getActiveTab());
+    generateTodoFolders();
   }
 
   const createTodoBtn = document.getElementById('create-todo');
