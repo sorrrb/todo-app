@@ -174,7 +174,8 @@ body {
 }
 
 #modal-content > form {
-  padding: 24px 16px;
+  margin-inline: 16px;
+  padding-block: 24px;
   display: flex;
   flex-direction: column;
   gap: 2px;
