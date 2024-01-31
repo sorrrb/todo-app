@@ -36,6 +36,10 @@ body {
   cursor: pointer;
 }
 
+.project-folder:hover {
+  border: 1px solid var(--section-bg);
+}
+
 
 
 #header, #logo-container {

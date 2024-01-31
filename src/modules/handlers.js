@@ -3,17 +3,23 @@ import FolderIcon from '../assets/media/folder.svg';
 import { projectManager, createProject, createTodo } from '../modules/task';
 import { createProjectFolder, createProjectHeader } from '../modules/load';
 
+
+
 const displayManager = (function () { // Use this to display todos???
   return {
 
   }
 })();
 
+
+
 function toggleModalDisplay() { // Toggles modal display value
   const modal = document.getElementById('modal');
   modal.classList.toggle('inactive');
   modal.classList.toggle('active');
 }
+
+
 
 function generateProjectFolders() {
   const content = document.getElementById('user-projects');
@@ -30,6 +36,8 @@ function generateProjectFolders() {
     content.appendChild(tab);
   })
 }
+
+
 
 function submitProjectModal() {
   const content = document.getElementById('modal-content');
@@ -51,6 +59,8 @@ function submitProjectModal() {
   const createProjectBtn = document.getElementById('create-project'); // Reimplement event listener for create project button
   createProjectBtn.addEventListener('click', createHandler);
 }
+
+
 
 function generateProjectModal() {
   const content = document.getElementById('modal-content');
@@ -111,10 +121,14 @@ function generateProjectModal() {
   content.appendChild(modalBtns);
 }
 
+
+
 function createHandler() { // Handles logic after pressing create project button
   toggleModalDisplay();
   if (this.id === 'create-project') generateProjectModal();
 }
+
+
 
 function tabHandler() {
   const projects = document.querySelectorAll('div.project-folder');
@@ -124,6 +138,8 @@ function tabHandler() {
   this.classList.toggle('active-folder');
   console.log(this.hasAttribute('data-index')); // log boolean value if folder clicked was user project folder
 }
+
+
 
 export function manageEventListeners() {
   const defaultActiveProject = document.querySelector('div.project-folder'); // Sets default active project to All
