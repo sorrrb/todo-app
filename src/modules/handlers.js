@@ -74,7 +74,7 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
   container.innerHTML = '';
 
   const system = ['All', 'Today', 'Upcoming', 'Urgent', 'Completed'];
-
+  
   if (system.includes(displayManager.getActiveTab())) {
     const foldersName = displayManager.getActiveTab();
     const folders = []; // Hard code empty array for now
@@ -550,7 +550,32 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
   });
   this.classList.toggle('active-folder');
 
-  if (this.hasAttribute('data-index')) { // If tab clicked is user project
+  if (this.hasAttribute('data-index') & e.target.classList.contains('delete-project')) {
+    const projectList = projectManager.getProjects();
+    projectManager.removeProject(projectList[this.dataset.index]);
+    displayManager.setActiveTab('All');
+    generateProjectFolders();
+
+    const newProjectList = projectManager.getProjects();
+    newProjectList.forEach((newProjectObject) => {
+      let index = newProjectObject.getId();
+      if (index > 0) newProjectObject.setId(index -= 1);
+    });
+    
+    const newProjects = document.querySelectorAll('div.project-folder');
+    newProjects.forEach((newProject) => {
+      if (newProject.dataset.index > 0) newProject.dataset.index -= 1;
+    });
+
+    generateTodoFolders();
+
+    const createProjectBtn = document.getElementById('create-project');
+    createProjectBtn.addEventListener('click', createHandler);
+
+    return;
+  }
+
+  else if (this.hasAttribute('data-index')) { // If tab clicked is user project
     const projectList = projectManager.getProjects();
     displayManager.setActiveTab(projectList[this.dataset.index]);
     generateTodoFolders();

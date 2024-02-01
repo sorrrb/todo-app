@@ -72,6 +72,7 @@ export function createProjectFolder(name, src, dataId) {
 
     const deleteIcon = new Image();
     deleteIcon.src = DeleteIcon;
+    deleteIcon.classList.add('delete-project');
 
     rightFolder.appendChild(deleteIcon);
   }
