@@ -6,6 +6,8 @@ import UpcomingIcon from '../assets/media/clock.svg';
 import UrgentIcon from '../assets/media/alert-circle.svg';
 import CompletedIcon from '../assets/media/check-square.svg';
 import FolderIcon from '../assets/media/folder.svg';
+import EditIcon from '../assets/media/edit.svg';
+import DeleteIcon from '../assets/media/trash.svg';
 import { format } from 'date-fns';
 
 // Helper function to capitalize string
@@ -67,9 +69,10 @@ export function createProjectFolder(name, src, dataId) {
   return folder;
 }
 
-export function createTodoFolder(name, description, deadline, priority) { // START HERE - NEED PARAMETERS
+export function createTodoFolder(name, description, deadline, priority, index) {
   const container = document.createElement('div');
   container.classList.add('collapsible-wrapper');
+  container.dataset.index = index;
 
   const folder = document.createElement('div');
   folder.classList.add('collapsible-folder');
@@ -112,6 +115,14 @@ export function createTodoFolder(name, description, deadline, priority) { // STA
   const folderRight = document.createElement('div');
   folderRight.classList.add('project-folder-right');
 
+  const editIcon = new Image();
+  editIcon.classList.add('edit-todo');
+  editIcon.src = EditIcon;
+
+  const deleteIcon = new Image();
+  deleteIcon.classList.add('delete-todo');
+  deleteIcon.src = DeleteIcon;
+
   const expandIcon = document.createElement('h1');
   expandIcon.innerHTML = '&plus;';
 
@@ -127,6 +138,8 @@ export function createTodoFolder(name, description, deadline, priority) { // STA
   folderLeft.appendChild(title);
   folderLeft.appendChild(dueDate);
 
+  folderRight.appendChild(editIcon);
+  folderRight.appendChild(deleteIcon);
   folderRight.appendChild(expandIcon);
 
   folder.appendChild(folderLeft);

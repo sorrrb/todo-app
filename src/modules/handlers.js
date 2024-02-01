@@ -5,7 +5,7 @@ import { createProjectFolder, createProjectHeader, createTodoFolder, createTodoH
 
 
 
-const displayManager = (function () { // Use this to display todos???
+const displayManager = (function () {
   let activeTab = null;
 
   const getActiveTab = () => activeTab;
@@ -29,9 +29,32 @@ function toggleModalDisplay() { // Toggles modal display value
 
 
 
-function generateTodoFolders() {
+function deleteTodoFolder(todoIndex) { // Deletes todo folder from DOM given folder index
+  const folders = displayManager.getActiveTab();
+  const system = ['All', 'Today', 'Upcoming', 'Urgent', 'Completed'];
+
+  if (system.includes(displayManager.getActiveTab())) {
+    console.log('Error - Trying to delete from System Project Tab');
+    return;
+  };
+
+  const todos = folders.getTodos();
+
+  todos.forEach((todo) => {
+    if (todo === todos[todoIndex]) {
+      folders.removeTodo(todo);
+      generateTodoFolders();
+    }
+  });
+}
+
+
+
+function generateTodoFolders() { // Creates todo folders and adds to DOM 
   const content = document.getElementById('display-controls');
   content.innerHTML = '';
+  const container = document.getElementById('user-todos');
+  container.innerHTML = '';
 
   const system = ['All', 'Today', 'Upcoming', 'Urgent', 'Completed'];
 
@@ -49,18 +72,21 @@ function generateTodoFolders() {
 
     const header = createTodoHeader(folders.length, foldersName);
     content.appendChild(header);
+
+    let i = 0;
     
     folders.forEach((folder) => {
-      const tab = createTodoFolder(folder.getTitle(), folder.getDescription(), folder.getDueDate(), folder.getPriority());
+      const tab = createTodoFolder(folder.getTitle(), folder.getDescription(), folder.getDueDate(), folder.getPriority(), i);
       tab.addEventListener('click', tabHandler);
-      content.appendChild(tab);
+      container.appendChild(tab);
+      i++;
     })
   }
 }
 
 
 
-function generateProjectFolders() {
+function generateProjectFolders() { // Creates projects folders and adds to DOM
   const content = document.getElementById('user-projects');
   content.innerHTML = '';
 
@@ -287,6 +313,7 @@ function generateTodoModal() {
   submitBtn.textContent = 'Submit';
   submitBtn.addEventListener('click', submitTodoModal);
 
+
   const cancelBtn = document.createElement('button');
   cancelBtn.id = 'cancel-modal';
   cancelBtn.textContent = 'Cancel';
@@ -310,18 +337,32 @@ function createHandler() { // Handles logic after pressing create project button
 
 
 
-function tabHandler() { // Handles logic after pressing project folder buttons
+function tabHandler(e) { // Handles logic after pressing project folder buttons
   if (this.classList.contains('collapsible-wrapper')) {
+    if (e.target.classList.contains('delete-todo')) {
+      deleteTodoFolder(this.dataset.index);
+      const createTodoBtn = document.getElementById('create-todo');
+      createTodoBtn.addEventListener('click', createHandler);
+    }
+
+    if (e.target.classList.contains('edit-todo')) {
+      console.log(this.dataset.index);
+    }
+
+    let symbol;
+
     if (this.lastElementChild.classList.contains('hidden')) {
+      symbol = 'minus';
       this.lastElementChild.classList.toggle('hidden');
       this.lastElementChild.classList.toggle('visible');
-      this.querySelector('h1').innerHTML = '	&minus;';
+      this.querySelector('h1').innerHTML = `	&${symbol};`;
     }
 
     else if (this.lastElementChild.classList.contains('visible')) {
+      symbol = 'plus';
       this.lastElementChild.classList.toggle('visible');
       this.lastElementChild.classList.toggle('hidden');
-      this.querySelector('h1').innerHTML = '&plus;';
+      this.querySelector('h1').innerHTML = `	&${symbol};`;
     }
 
     return;
