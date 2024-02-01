@@ -4,16 +4,16 @@
 }
 
 :root {
-  --main-bg: #f3f4f6;
-  --side-bg: #e2e8f0;
-  --button-bg: #fef3c7f5;
-  --button-contrast: #f5dd90;
-  --accent-border: #fef3c7f5;
+  --main-bg: #F0F8EA;
+  --section-bg: #CACCAA;
+  --section-border: #53534338;
+  --text-accent: #3C493F;
+  --divider: #535343a8;
+  --modal-bg-fallback: #000000;
   --modal-bg: #00000050;
-  --border-opaque: #00000090;
-  --priority-low: #84cc16;
-  --priority-med: #fde047;
-  --priority-high: #b91c1c;
+  --opaque: #00000025;
+  --submit: #65a30d;
+  --cancel: #dc2626;
 }
 
 * {
@@ -27,75 +27,119 @@ body {
   display: grid;
   grid-template-rows: 1fr 9fr;
   font-family: 'Quicksand';
+  background-color: var(--main-bg);
 }
 
-button:hover, .close-modal:hover {
+
+
+.project-folder, #create-project, #create-todo, #close-modal, #submit-modal, #cancel-modal, .collapsible-wrapper {
   cursor: pointer;
 }
 
-#create-project:hover, #todo-menu > button:hover {
-  background-color: var(--button-contrast);
-}
-
-.project-card img:hover, .project-card p:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.default-project img:hover, #sort-priority {
-  cursor: not-allowed;
+.project-folder:hover {
+  border: 1px solid var(--section-bg);
 }
 
 
 
-
+#header, #logo-container {
+  display: flex;
+  align-items: center;
+}
 
 #header {
   padding-inline: 36px;
-  display: flex;
-  align-items: center;
+  color: var(--text-accent);
   font-size: 1.75rem;
-  background-color: var(--side-bg);
-  border-bottom: 6px solid var(--accent-border);
+  border-bottom: 6px solid var(--section-border);
 }
 
-
-#page-title {
-  text-transform: uppercase;
+#logo-container {
+  gap: 8px;
 }
 
-
+#header, #sidebar {
+  background-color: var(--section-border);
+}
 
 
 
 #main {
   display: grid;
-  grid-template-columns: 2fr 8fr;
-  background-color: var(--main-bg);
+  grid-template-columns: 1fr 3fr;
 }
-
 
 #sidebar {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--side-bg);
-  border-right: 6px solid var(--accent-border);
+  padding: 36px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border-right: 6px solid var(--section-border);
 }
 
-#projects-title {
-  font-size: 1.75rem;
-  border-bottom: 2px solid black;
-  text-align: center;
-}
-
-#projects-container {
-  width: 100%;
+#system-projects, #user-projects {
   display: flex;
   flex-direction: column;
+}
+
+#system-projects {
   gap: 16px;
+  margin-bottom: 16px;
+}
+
+#user-projects {
+  gap: 8px;
+  margin-top: 16px;
+}
+
+#projects-info {
+  padding-inline: 16px;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--divider);
+}
+
+#create-project {
+  z-index: 1;
+}
+
+#create-project, #create-todo {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.project-folder {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: var(--section-border);
+  border: 1px solid var(--opaque);
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-folder-left, .project-folder-right {
+  display: flex;
+}
+
+.project-folder-left {
+  gap: 8px;
+}
+
+.active-folder {
+  background-color: var(--section-bg);
+}
+
+#display {
+  padding: 16px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+#display-controls, #user-todos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 #projects {
@@ -105,64 +149,59 @@ button:hover, .close-modal:hover {
   width: 100%;
 }
 
-.project-card, .project-card-left, .project-card-right {
-  display: flex;
-  align-items: center;
-}
-
-.project-card {
-  justify-content: space-between;
-  gap: 16px;
-  font-size: 1rem;
-}
-
-.project-card-left {
-  gap: 4px;
-  font-weight: 500;
-}
-
-#create-project {
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  background-color: var(--button-bg);
-  border: 1px solid var(--border-opaque);
-  border-radius: 6px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: bold;
-  gap: 4px;
-}
-
-
-#display {
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-#todo-menu {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--modal-bg);
-  padding: 8px;
-  border-bottom: 1px solid var(--modal-bg);
-}
-
-#todo-menu > button {
-  font-size: 0.75rem;
-  font-weight: bold;
-  background-color: var(--button-bg);
-  border: 1px solid var(--border-opaque);
-  border-radius: 4px;
-  padding: 4px 8px;
-}
-
-#todos-container {
-  padding: 16px;
+#todos-info {
+  padding-bottom: 24px;
+  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--divider);
+}
+
+#todos-info > div {
+  display: flex;
+  gap: 6px;
+}
+
+.collapsible-folder, .collapsible-content {
+  padding: 4px 8px;
+  overflow: hidden;
+}
+
+.collapsible-content {
+  padding: 16px 24px;
+  background-color: var(--divider);
+  color: var(--main-bg);
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.todo-folder {
+  padding-left: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--section-border);
+}
+
+.todo-folder-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.todo-folder-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 #create-todo {
@@ -212,18 +251,15 @@ button:hover, .close-modal:hover {
   font-weight: 500;
 }
 
-.todo-expand {
-  padding: 8px 24px;
-  display: none;
-  overflow: hidden;
-  background-color: var(--modal-bg);
-  border: 1px solid var(--modal-bg);
-  border-top: none;
+
+#display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.edit-icon {
-  display: none;
-}
+
+
 
 .low-priority {
   border: 1px solid var(--priority-low);
@@ -241,45 +277,74 @@ button:hover, .close-modal:hover {
 }
 
 
-
-
-#project-modal, #todo-modal {
-  display: none;
+#modal {
   position: fixed;
   z-index: 1;
-  top: 0;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
+  background-color: var(--modal-bg-fallback);
   background-color: var(--modal-bg);
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: underline;
+.active {
+  display: block;
 }
 
-.modal-content {
+.inactive {
+  display: none;
+}
+
+#modal-content {
+  border-radius: 6px;
   background-color: var(--main-bg);
   margin: 15% auto;
-  padding: 20px;
-  width: 40%;
+  width: 30%;
+}
+
+
+@media (max-width: 1500px) {
+  #modal-content {
+    width: 50%;
+  }
+
+}
+
+#modal-content > * {
+  padding: 16px;
+}
+
+#modal-content > header {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background-image: linear-gradient(var(--section-border), var(--divider));
+  display: flex;
+  justify-content: space-between;
+}
+
+#modal-content > form {
+  margin-inline: 16px;
+  padding-block: 24px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 2px;
+  border-bottom: 1px solid var(--divider);
 }
 
-#todo-modal .modal-content {
-  margin: 10% auto;
+
+
+#modal-content > form label {
+  color: var(--text-accent);
 }
 
-#project-modal input {
-  padding: 4px 8px;
-  border: 1px solid var(--modal-bg);
-  border-radius: 6px;
+#modal-content > form input, #modal-content > form textarea, #modal-content > form select {
+  padding: 8px 12px;
+  align-self: flex-start;
+  border: 1px solid var(--opaque);
+  border-radius: 4px;
+  background-color: var(--main-bg);
   font-family: 'Quicksand';
   font-size: 1rem;
 }
@@ -317,18 +382,48 @@ button:hover, .close-modal:hover {
   width: 20%;
 }
 
-.submit-btn {
-  padding: 4px 8px;
-  border: 1px solid black;
-  border-radius: 4px;
-  background-color: var(--button-contrast);
+.form-warning {
+  display: none;
+  font-size: 0.75rem;
   font-weight: bold;
-  align-self: center;
+  color: var(--cancel);
 }
 
-.active-project-text {
-  text-decoration: underline;
-  font-size: 1.25rem;
-  font-style: italic;
+.required {
+  color: var(--cancel);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+}
+
+#submit-modal, #cancel-modal {
+  background: none;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
   font-weight: bold;
+  color: white;
+}
+
+#submit-modal {
+  background-color: var(--submit);
+}
+
+#cancel-modal {
+  background-color: var(--cancel);
+}
+
+.low-priority {
+  border-left: 8px solid green;
+}
+
+.med-priority {
+  border-left: 8px solid yellow;
+}
+
+.high-priority {
+  border-left: 8px solid red;
 }

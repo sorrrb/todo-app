@@ -1,257 +1,331 @@
-import createIcon from '../assets/media/square-plus.svg'
-import closeIcon from '../assets/media/close.svg';
-import searchIcon from '../assets/media/search.svg';
+import Logo from '../assets/media/book-open.svg';
+import AddIcon from '../assets/media/plus-circle.svg';
+import AllIcon from '../assets/media/file-text.svg';
+import TodayIcon from '../assets/media/calendar.svg';
+import UpcomingIcon from '../assets/media/clock.svg';
+import UrgentIcon from '../assets/media/alert-circle.svg';
+import CompletedIcon from '../assets/media/check-square.svg';
+import FolderIcon from '../assets/media/folder.svg';
+import EditIcon from '../assets/media/edit.svg';
+import DeleteIcon from '../assets/media/trash.svg';
+import { format } from 'date-fns';
 
-function createHeader() { // Responsible for generating elements for applet style
+// Helper function to capitalize string
+function capitalize(string) {
+  const firstLetter = string.charAt(0);
+  const remainingLetters = string.slice(1);
+
+  return firstLetter.toUpperCase() + remainingLetters;
+}
+
+// Helper function to create Date Object from given duedate string
+function createDate(string) {
+  const year = string.slice(0, 4);
+  const month = string.slice(5, 7);
+  const day = string.slice(8);
+
+  const date = new Date(year, month - 1, day);
+
+  return date;
+}
+
+// Page skeleton is loaded
+
+function createHeader() {
   const header = document.createElement('header');
   header.id = 'header';
+  
+  const title = document.createElement('div');
+  title.id = 'logo-container';
+  const text = document.createElement('h1');
+  text.textContent = 'TO-DO';
 
-  const title = document.createElement('h1');
-  title.textContent = 'To-Do';
-  title.id = 'page-title';
+  const logo = new Image();
+  logo.src = Logo;
 
+  title.appendChild(logo);
+  title.appendChild(text);
   header.appendChild(title);
 
   return header;
 }
 
-function createMainProjects() { // Helper responsible for generating sidebar elements
-  const projects = document.createElement('div');
-  projects.id = 'projects';
+export function createProjectFolder(name, src, dataId) {
+  const folder = document.createElement('div');
+  folder.classList.add('project-folder');
 
-  const projectsTitle = document.createElement('h2');
-  projectsTitle.id = 'projects-title';
-  projectsTitle.textContent = 'Your Projects';
+  const leftFolder = document.createElement('div');
+  leftFolder.classList.add('project-folder-left');
 
-  const projectsContainer = document.createElement('div');
-  projectsContainer.id = 'projects-container';
+  const rightFolder = document.createElement('div');
+  rightFolder.classList.add('project-folder-right');
 
-  projects.appendChild(projectsTitle);
-  projects.appendChild(projectsContainer);
+  const projectIcon = new Image();
+  projectIcon.src = src;
 
-  return projects;
+  const title = document.createElement('h3');
+
+  title.textContent = `${capitalize(name)}`;
+
+  if (typeof(dataId) === 'number') {
+    folder.dataset.index = dataId;
+
+    const deleteIcon = new Image();
+    deleteIcon.src = DeleteIcon;
+    deleteIcon.classList.add('delete-project');
+
+    rightFolder.appendChild(deleteIcon);
+  }
+
+  leftFolder.appendChild(projectIcon);
+  leftFolder.appendChild(title);
+
+  folder.appendChild(leftFolder);
+  folder.appendChild(rightFolder);
+
+  return folder;
 }
 
-function createDisplayMain() {
-  const display = document.createElement('nav');
-  display.id = 'todo-menu';
+export function createTodoFolder(name, description, deadline, priority, index) {
+  const container = document.createElement('div');
+  container.classList.add('collapsible-wrapper');
+  container.dataset.index = index;
 
-  const createBtn = document.createElement('button');
-  createBtn.id = 'create-todo';
-  createBtn.innerHTML = `Add a Todo &#10133;`;
+  const folder = document.createElement('div');
+  folder.classList.add('collapsible-folder');
+  folder.classList.add('todo-folder');
 
-  const sortNameBtn = document.createElement('button');
-  sortNameBtn.id = 'sort-name';
-  sortNameBtn.innerHTML = `Sort by Name`;
+  const title = document.createElement('h4');
+  title.textContent = name;
+  title.style.textDecoration = 'underline';
 
-  const sortDueDateBtn = document.createElement('button');
-  sortDueDateBtn.id = 'sort-duedate';
-  sortDueDateBtn.innerHTML = `Sort by Due Date`;
+  const notes = document.createElement('p');
+  notes.textContent = description;
 
-  const sortPriorityBtn = document.createElement('button');
-  sortPriorityBtn.id = 'sort-priority';
-  sortPriorityBtn.innerHTML = `Sort by Priority`;
+  const dueDate = document.createElement('p');
+ 
+  if (deadline === '') {
+    const today = new Date();
+    dueDate.textContent = format(today, "MM/dd/yyyy");
+  }
 
-  display.appendChild(createBtn);
-  display.appendChild(sortNameBtn);
-  display.appendChild(sortDueDateBtn);
-  display.appendChild(sortPriorityBtn);
+  else {
+    const dateFormat = createDate(deadline);
+    dueDate.textContent = format(dateFormat, "MM/dd/yyyy");
+  }
 
-  return display;
+  switch(priority) {
+    case 'low':
+      folder.classList.add('low-priority');
+      break;
+    case 'med':
+      folder.classList.add('med-priority');
+      break;
+    case 'high':
+      folder.classList.add('high-priority');
+      break;
+  }
+
+  const folderLeft = document.createElement('div');
+  folderLeft.classList.add('todo-folder-left');
+
+  const folderRight = document.createElement('div');
+  folderRight.classList.add('todo-folder-right');
+
+  const editIcon = new Image();
+  editIcon.classList.add('edit-todo');
+  editIcon.src = EditIcon;
+
+  const deleteIcon = new Image();
+  deleteIcon.classList.add('delete-todo');
+  deleteIcon.src = DeleteIcon;
+
+  const expandIcon = document.createElement('h1');
+  expandIcon.innerHTML = '&plus;';
+
+  const collapsible = document.createElement('div');
+  collapsible.classList.add('collapsible-content');
+  collapsible.classList.add('hidden');
+
+  const descriptionExpand = document.createElement('p');
+  descriptionExpand.textContent = (description === '' ? 'N/A' : description);
+
+  collapsible.appendChild(descriptionExpand);
+
+  folderLeft.appendChild(title);
+  folderLeft.appendChild(dueDate);
+
+  folderRight.appendChild(editIcon);
+  folderRight.appendChild(deleteIcon);
+  folderRight.appendChild(expandIcon);
+
+  folder.appendChild(folderLeft);
+  folder.appendChild(folderRight);
+
+  container.appendChild(folder);
+  container.appendChild(collapsible);
+
+  return container;
 }
 
-function createMain() { // Responsible for generating elements for applet style/functionality
+export function createTodoHeader(todoQuantity, name) {
+  const header = document.createElement('header');
+  header.id = 'todos-info';
+
+  const text = document.createElement('h2');
+  text.textContent = `Tasks (${todoQuantity})`;
+
+  const projectTab = document.createElement('div');
+  
+  const tabIcon = new Image();
+
+  switch(name) {
+    case 'All':
+      tabIcon.src = AllIcon;
+      break;
+    case 'Today':
+      tabIcon.src = TodayIcon;
+      break;
+    case 'Upcoming':
+      tabIcon.src = UpcomingIcon;
+      break;
+    case 'Urgent':
+      tabIcon.src = UrgentIcon;
+      break;
+    case 'Completed':
+      tabIcon.src = CompletedIcon;
+      break;
+    default:
+      tabIcon.src = FolderIcon;
+      break;
+  }
+
+  const tabName = document.createElement('h2');
+  tabName.textContent = name;
+
+  const createIcon = new Image();
+  createIcon.id = 'create-todo';
+  createIcon.src = AddIcon;
+
+  projectTab.appendChild(tabIcon);
+  projectTab.appendChild(tabName);
+
+  header.appendChild(projectTab);
+  header.appendChild(text);
+  header.appendChild(createIcon);
+
+  return header;
+}
+
+export function createProjectHeader(projectQuantity) {
+  const header = document.createElement('header');
+  header.id = 'projects-info';
+
+  const text = document.createElement('h3');
+  text.textContent = `Your Projects (${projectQuantity})`;
+
+  const btn = document.createElement('button');
+  btn.id = 'create-project';
+  
+  const img = new Image();
+  img.src = AddIcon;
+
+  btn.appendChild(img);
+
+  header.appendChild(text);
+  header.appendChild(btn);
+
+  return header;
+}
+
+
+
+function createMain() {
   const main = document.createElement('main');
   main.id = 'main';
 
-  const sidebar = document.createElement('div');
+  const sidebar = document.createElement('section');
   sidebar.id = 'sidebar';
 
-  const projects = createMainProjects();
+  const systemNav = document.createElement('div');
+  systemNav.id = 'system-projects';
 
-  const addProjectBtn = document.createElement('button');
-  addProjectBtn.id = 'create-project';
+  const userNav = document.createElement('div');
+  userNav.id = 'user-projects';
 
-  const btnIcon = new Image();
-  btnIcon.src = createIcon;
+  const systemProjects = {
+    all: AllIcon,
+    today: TodayIcon,
+    upcoming: UpcomingIcon,
+    urgent: UrgentIcon,
+    completed: CompletedIcon
+  }
 
-  const btnText = document.createElement('p');
-  btnText.textContent = 'Add New Project';
+  for (const prop in systemProjects) {
+    const systemFolder = createProjectFolder(prop, systemProjects[prop]);
+    systemNav.appendChild(systemFolder);
+  }
 
-  addProjectBtn.appendChild(btnText);
-  addProjectBtn.appendChild(btnIcon);
+  const userProjectsHeader = createProjectHeader(0); 
 
-  sidebar.appendChild(projects);
-  sidebar.appendChild(addProjectBtn);
+  userNav.appendChild(userProjectsHeader);
 
-  main.appendChild(sidebar);
+  sidebar.appendChild(systemNav);
+  sidebar.appendChild(userNav);
 
-  const display = document.createElement('div');
+  const display = document.createElement('section');
   display.id = 'display';
 
-  const displayMenu = createDisplayMain();
+  const displayNav = document.createElement('div');
+  displayNav.id = 'display-controls';
 
-  const displayTodoContainer = document.createElement('div');
-  displayTodoContainer.id = 'todos-container';
+  const displayHeader = createTodoHeader(0, 'All');
 
-  display.appendChild(displayMenu);
-  display.appendChild(displayTodoContainer);
+  const displayTodos = document.createElement('div');
+  displayTodos.id = 'user-todos';
 
+  displayNav.appendChild(displayHeader);
+
+  display.appendChild(displayNav);
+  display.appendChild(displayTodos);
+
+  main.appendChild(sidebar);
   main.appendChild(display);
 
   return main;
 }
 
-function createProjectModal() { // Responsible for providing interface to add to-dos to projects
+
+
+
+function createModal() {
   const modal = document.createElement('div');
-  modal.id = 'project-modal';
+  modal.id = 'modal';
+  modal.classList.add('inactive');
 
-  const modalContent = document.createElement('div');
-  modalContent.classList.add('modal-content');
+  const content = document.createElement('div');
+  content.id = 'modal-content';
 
-  const modalHeader = document.createElement('header');
-  modalHeader.classList.add('modal-header');
-
-  const modalTitle = document.createElement('h4');
-  modalTitle.textContent = 'Add a new Project:';
-
-  const closeModalBtn = new Image();
-  closeModalBtn.id = 'pmodal-close';
-  closeModalBtn.classList.add('close-modal');
-  closeModalBtn.src = closeIcon;
-
-  modalHeader.appendChild(modalTitle);
-  modalHeader.appendChild(closeModalBtn);
-
-  const modalForm = document.createElement('form');
-  modalForm.onsubmit = function () { return false };
-  const projectNameField = document.createElement('input');
-  projectNameField.id = 'pmodal-title';
-  projectNameField.maxLength = 16;
-  projectNameField.placeholder = 'Enter Project Title';
-  projectNameField.type = 'text';
-
-  const modalSubmit = document.createElement('button');
-  modalSubmit.id = 'submit-project';
-  modalSubmit.classList.add('submit-btn');
-  modalSubmit.type = 'button';
-  modalSubmit.textContent = 'Add Project';
-
-  modalForm.appendChild(projectNameField);
-
-  modalContent.appendChild(modalHeader);
-  modalContent.appendChild(modalForm);
-  modalContent.appendChild(modalSubmit);
-
-  modal.appendChild(modalContent);
-
-  return modal;
-}
-
-function createTodoModal() { // Responsible for providing interface to add projects to project manager
-  const modal = document.createElement('div');
-  modal.id = 'todo-modal';
-
-  const modalContent = document.createElement('div');
-  modalContent.classList.add('modal-content');
-
-  const modalHeader = document.createElement('header');
-  modalHeader.classList.add('modal-header');
-
-  const modalTitle = document.createElement('h4');
-  modalTitle.textContent = 'Add a new Todo:';
-
-  const closeModalBtn = new Image();
-  closeModalBtn.id = 'tmodal-close';
-  closeModalBtn.classList.add('close-modal');
-  closeModalBtn.src = closeIcon;
-
-  modalHeader.appendChild(modalTitle);
-  modalHeader.appendChild(closeModalBtn);
-
-  const modalForm = document.createElement('form');
-
-  const todoNameLabel = document.createElement('label');
-  todoNameLabel.textContent = 'Task Name:';
-  const todoNameField = document.createElement('input');
-  todoNameField.placeholder = 'eg: Go get groceries';
-  todoNameField.id = 'tmodal-title';
-
-  const todoDescriptionLabel = document.createElement('label');
-  todoDescriptionLabel.textContent = 'Task Description:';
-  const todoDescriptionField = document.createElement('textarea');
-  todoDescriptionField.placeholder = 'eg: Need eggs, milk, bread, potatoes, etc.';
-  todoDescriptionField.id = 'tmodal-description';
-
-  const todoDueDateLabel = document.createElement('label');
-  todoDueDateLabel.textContent = 'Task Deadline:';
-  const todoDueDateField = document.createElement('input');
-  todoDueDateField.type = 'date';
-  todoDueDateField.id = 'tmodal-deadline';
-
-  const todoPriorityLabel = document.createElement('label');
-  todoPriorityLabel.textContent = 'Task Priority:';
-  const todoPriorityField = document.createElement('select');
-  todoPriorityField.id = 'tmodal-priority';
-  todoPriorityField.name = 'todo-priority';
-
-  const todoPriorityLow = document.createElement('option');
-  todoPriorityLow.textContent = 'Low';
-  todoPriorityLow.value = 'low';
-  const todoPriorityMed = document.createElement('option');
-  todoPriorityMed.textContent = 'Medium';
-  todoPriorityMed.value = 'medium';
-  const todoPriorityHigh = document.createElement('option');
-  todoPriorityHigh.textContent = 'High';
-  todoPriorityHigh.value = 'high';
-
-  const modalSubmit = document.createElement('button');
-  modalSubmit.id = 'submit-todo';
-  modalSubmit.classList.add('submit-btn');
-  modalSubmit.type = 'button';
-  modalSubmit.textContent = 'Add Todo';
-
-  todoPriorityField.appendChild(todoPriorityLow);
-  todoPriorityField.appendChild(todoPriorityMed);
-  todoPriorityField.appendChild(todoPriorityHigh);
-
-  modalForm.appendChild(todoNameLabel);
-  modalForm.appendChild(todoNameField);
-  modalForm.appendChild(todoDescriptionLabel);
-  modalForm.appendChild(todoDescriptionField);
-  modalForm.appendChild(todoDueDateLabel);
-  modalForm.appendChild(todoDueDateField);
-  modalForm.appendChild(todoPriorityLabel);
-  modalForm.appendChild(todoPriorityField);
-  
-  modalContent.appendChild(modalHeader);
-  modalContent.appendChild(modalForm);
-  modalContent.appendChild(modalSubmit);
-
-  modal.appendChild(modalContent);
+  modal.appendChild(content);
 
   return modal;
 }
 
 
 
-function paintDisplay() { // Responsible for painting main display style
+
+export function loadPage() { // Responsible for generating page skeleton and appending to document body
+  const pages = [];
+
   const header = createHeader();
   const main = createMain();
-  const projectModal = createProjectModal();
-  const todoModal = createTodoModal();
+  const modal = createModal();
 
-  const webpage = document.body;
-  webpage.appendChild(header);
-  webpage.appendChild(main);
-  webpage.appendChild(projectModal);
-  webpage.appendChild(todoModal);
+  pages.push(header);
+  pages.push(main);
+  pages.push(modal);
+
+  pages.forEach((page) => {
+    document.body.appendChild(page);
+  })
 }
-
-
-
-function loadPage() {
-  paintDisplay();
-}
-
-export default loadPage;
