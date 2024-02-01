@@ -10,7 +10,7 @@
   --text-accent: #3C493F;
   --divider: #535343a8;
   --modal-bg-fallback: #000000;
-  --modal-bg: #00000050;
+  --modal-bg: #00000090;
   --opaque: #00000025;
   --submit: #65a30d;
   --cancel: #dc2626;
@@ -225,7 +225,7 @@ body {
 #modal-content {
   border-radius: 6px;
   background-color: var(--main-bg);
-  margin: 15% auto;
+  margin: 10% auto;
   width: 30%;
 }
 

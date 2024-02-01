@@ -181,6 +181,12 @@ function generateProjectModal() {
   form.appendChild(label);
   form.appendChild(input);
   form.appendChild(validateMsg);
+  form.onkeydown = e => {
+    if (e.key === 'Enter') {
+      submitProjectModal();
+      return false;
+    }
+  }
 
   const modalBtns = document.createElement('div');
   modalBtns.classList.add('modal-buttons');
@@ -309,7 +315,7 @@ function generateTodoModal() {
   prioritySelect.appendChild(highPriority);
 
   const folderWarning = document.createElement('p');
-  folderWarning.textContent = 'Please create & select a folder first!';
+  folderWarning.textContent = 'Please create & select a project folder first!';
   folderWarning.classList.add('form-warning');
   folderWarning.classList.add('project-select-warning');
 
@@ -323,6 +329,12 @@ function generateTodoModal() {
   form.appendChild(priorityLabel);
   form.appendChild(prioritySelect);
   form.appendChild(folderWarning);
+  form.onkeydown = e => {
+    if (e.key === 'Enter') {
+      submitTodoModal();
+      return false;
+    }
+  }
 
   const modalBtns = document.createElement('div');
   modalBtns.classList.add('modal-buttons');
@@ -466,7 +478,7 @@ function generateEditTodoModal(oldTitle, oldDescription, oldDueDate, oldPriority
   prioritySelect.value = oldPriority;
 
   const folderWarning = document.createElement('p');
-  folderWarning.textContent = 'Please create & select a folder first!';
+  folderWarning.textContent = 'Please create & select a project folder first!';
   folderWarning.classList.add('form-warning');
   folderWarning.classList.add('project-select-warning');
 
@@ -480,6 +492,12 @@ function generateEditTodoModal(oldTitle, oldDescription, oldDueDate, oldPriority
   form.appendChild(priorityLabel);
   form.appendChild(prioritySelect);
   form.appendChild(folderWarning);
+  form.onkeydown = e => {
+    if (e.key === 'Enter') {
+      submitEditTodoModal();
+      return false;
+    }
+  }
 
   const modalBtns = document.createElement('div');
   modalBtns.classList.add('modal-buttons');
