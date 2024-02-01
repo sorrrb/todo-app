@@ -1,17 +1,25 @@
 function createTodo(title, description, dueDate, priority) { // Responsible for creating Todo objects (which have properties/methods related to generating 'tasks that are needed to do')
   const getTitle = () => title;
+  const setTitle = newTitle => title = newTitle;
 
   const getDescription = () => description;
+  const setDescription = newDescription => description = newDescription;
 
   const getDueDate = () => dueDate;
+  const setDueDate = newDueDate => dueDate = newDueDate;
 
   const getPriority = () => priority;
+  const setPriority = newPriority => priority = newPriority;
 
   return {
     getTitle,
     getDescription,
     getDueDate,
-    getPriority
+    getPriority,
+    setTitle,
+    setDescription,
+    setDueDate,
+    setPriority
   };
 }
 

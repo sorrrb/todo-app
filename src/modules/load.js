@@ -54,17 +54,33 @@ export function createProjectFolder(name, src, dataId) {
   const folder = document.createElement('div');
   folder.classList.add('project-folder');
 
-  if (typeof(dataId) === 'number') folder.dataset.index = dataId;
+  const leftFolder = document.createElement('div');
+  leftFolder.classList.add('project-folder-left');
 
-  const icon = new Image();
-  icon.src = src;
+  const rightFolder = document.createElement('div');
+  rightFolder.classList.add('project-folder-right');
+
+  const projectIcon = new Image();
+  projectIcon.src = src;
 
   const title = document.createElement('h3');
 
   title.textContent = `${capitalize(name)}`;
 
-  folder.appendChild(icon);
-  folder.appendChild(title);
+  if (typeof(dataId) === 'number') {
+    folder.dataset.index = dataId;
+
+    const deleteIcon = new Image();
+    deleteIcon.src = DeleteIcon;
+
+    rightFolder.appendChild(deleteIcon);
+  }
+
+  leftFolder.appendChild(projectIcon);
+  leftFolder.appendChild(title);
+
+  folder.appendChild(leftFolder);
+  folder.appendChild(rightFolder);
 
   return folder;
 }
@@ -110,10 +126,10 @@ export function createTodoFolder(name, description, deadline, priority, index) {
   }
 
   const folderLeft = document.createElement('div');
-  folderLeft.classList.add('project-folder-left');
+  folderLeft.classList.add('todo-folder-left');
 
   const folderRight = document.createElement('div');
-  folderRight.classList.add('project-folder-right');
+  folderRight.classList.add('todo-folder-right');
 
   const editIcon = new Image();
   editIcon.classList.add('edit-todo');

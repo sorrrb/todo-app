@@ -48,6 +48,23 @@ function deleteTodoFolder(todoIndex) { // Deletes todo folder from DOM given fol
   });
 }
 
+function editTodoFolder(todoIndex) {
+  const folders = displayManager.getActiveTab();
+
+  const todos = folders.getTodos();
+  
+  const activeTodo = todos[todoIndex];
+
+  const title = activeTodo.getTitle();
+  const description = activeTodo.getDescription();
+  const deadline = activeTodo.getDueDate();
+  const priority = activeTodo.getPriority();
+  
+
+  toggleModalDisplay();
+  generateEditTodoModal(title, description, deadline, priority, todoIndex);
+}
+
 
 
 function generateTodoFolders() { // Creates todo folders and adds to DOM 
@@ -101,39 +118,6 @@ function generateProjectFolders() { // Creates projects folders and adds to DOM
     content.appendChild(tab);
   })
 }
-
-
-function submitTodoModal() {
-  const content = document.getElementById('modal-content');
-  const input = content.querySelector('input').value;
-  const nameWarning = content.querySelector('p.form-warning');
-  const projectWarning = content.querySelector('p.project-select-warning');
-  
-  if (!input) {
-    nameWarning.style.display = 'block';
-    return;
-  }
-
-  const todos = displayManager.getActiveTab();
-
-  if (typeof(todos) === 'string') {
-    projectWarning.style.display = 'block';
-    return;
-  }
-
-  const description = document.getElementById('todo-description').value;
-  const deadline = document.getElementById('todo-deadline').value;
-  const priority = document.getElementById('todo-priority').value;
-
-  const newTodo = createTodo(input, description, deadline, priority);
-  todos.addTodo(newTodo);
-  generateTodoFolders();
-  toggleModalDisplay();
-
-  const createTodoBtn = document.getElementById('create-todo');
-  createTodoBtn.addEventListener('click', createHandler);
-}
-
 
 
 
@@ -218,6 +202,41 @@ function generateProjectModal() {
   content.appendChild(form);
   content.appendChild(modalBtns);
 }
+
+
+
+function submitTodoModal() {
+  const content = document.getElementById('modal-content');
+  const input = content.querySelector('input').value;
+  const nameWarning = content.querySelector('p.form-warning');
+  const projectWarning = content.querySelector('p.project-select-warning');
+  
+  if (!input) {
+    nameWarning.style.display = 'block';
+    return;
+  }
+
+  const todos = displayManager.getActiveTab();
+
+  if (typeof(todos) === 'string') {
+    projectWarning.style.display = 'block';
+    return;
+  }
+
+  const description = document.getElementById('todo-description').value;
+  const deadline = document.getElementById('todo-deadline').value;
+  const priority = document.getElementById('todo-priority').value;
+
+  const newTodo = createTodo(input, description, deadline, priority);
+  todos.addTodo(newTodo);
+  generateTodoFolders();
+  toggleModalDisplay();
+
+  const createTodoBtn = document.getElementById('create-todo');
+  createTodoBtn.addEventListener('click', createHandler);
+}
+
+
 
 function generateTodoModal() {
   const content = document.getElementById('modal-content');
@@ -329,6 +348,163 @@ function generateTodoModal() {
 
 
 
+function submitEditTodoModal() {
+  const content = document.getElementById('modal-content');
+  const input = content.querySelector('input').value;
+  const nameWarning = content.querySelector('p.form-warning');
+  const projectWarning = content.querySelector('p.project-select-warning');
+  
+  if (!input) {
+    nameWarning.style.display = 'block';
+    return;
+  }
+
+  const activeProject = displayManager.getActiveTab();
+
+  if (typeof(activeProject) === 'string') {
+    projectWarning.style.display = 'block';
+    return;
+  }
+
+  const description = document.getElementById('todo-description').value;
+  const deadline = document.getElementById('todo-deadline').value;
+  const priority = document.getElementById('todo-priority').value;
+
+  const projectTasks = activeProject.getTodos();
+
+  const todoIndex = document.getElementById('submit-modal').dataset.id;
+
+  const activeTask = projectTasks[todoIndex];
+
+  activeTask.setTitle(input);
+  activeTask.setDescription(description);
+  activeTask.setDueDate(deadline);
+  activeTask.setPriority(priority);
+
+  generateTodoFolders();
+  toggleModalDisplay();
+
+  const createTodoBtn = document.getElementById('create-todo');
+  createTodoBtn.addEventListener('click', createHandler);
+}
+
+
+
+function generateEditTodoModal(oldTitle, oldDescription, oldDueDate, oldPriority, todoIndex) {
+  const content = document.getElementById('modal-content');
+  content.innerHTML = '';
+
+  const header = document.createElement('header');
+
+  const title = document.createElement('h2');
+  title.textContent = 'Edit task: ';
+
+  const exit = new Image();
+  exit.src = CloseIcon;
+  exit.id = 'close-modal';
+  exit.addEventListener('click', toggleModalDisplay);
+
+  header.appendChild(title);
+  header.appendChild(exit);
+
+  const form = document.createElement('form');
+
+  const nameLabel = document.createElement('label');
+  nameLabel.textContent = 'Task Name: ';
+
+  const nameAsterisk = document.createElement('span');
+  nameAsterisk.classList.add('required');
+  nameAsterisk.textContent = '*';
+
+  nameLabel.appendChild(nameAsterisk);
+
+  const nameInput = document.createElement('input');
+  nameInput.id = 'todo-name';
+  nameInput.value = oldTitle;
+
+  const validateMsg = document.createElement('p');
+  validateMsg.textContent = 'Please fill out the required field!';
+  validateMsg.classList.add('form-warning');
+
+  const descriptionLabel = document.createElement('label');
+  descriptionLabel.textContent = 'Task Description:';
+
+  const descriptionInput = document.createElement('textarea');
+  descriptionInput.id = 'todo-description';
+  descriptionInput.value = oldDescription;
+
+  const deadlineLabel = document.createElement('label');
+  deadlineLabel.textContent = 'Task Due Date:';
+
+  const deadlineInput = document.createElement('input');
+  deadlineInput.type = 'date';
+  deadlineInput.id = 'todo-deadline';
+  deadlineInput.value = oldDueDate;
+
+  const priorityLabel = document.createElement('label');
+  priorityLabel.textContent = 'Task Priority:';
+
+  const prioritySelect = document.createElement('select');
+  prioritySelect.id = 'todo-priority';
+  
+  const lowPriority = document.createElement('option');
+  lowPriority.value = 'low';
+  lowPriority.textContent = 'Low';
+
+  const medPriority = document.createElement('option');
+  medPriority.value = 'med';
+  medPriority.textContent = 'Medium';
+
+  const highPriority = document.createElement('option');
+  highPriority.value = 'high';
+  highPriority.textContent = 'High';
+
+  prioritySelect.appendChild(lowPriority);
+  prioritySelect.appendChild(medPriority);
+  prioritySelect.appendChild(highPriority);
+
+  prioritySelect.value = oldPriority;
+
+  const folderWarning = document.createElement('p');
+  folderWarning.textContent = 'Please create & select a folder first!';
+  folderWarning.classList.add('form-warning');
+  folderWarning.classList.add('project-select-warning');
+
+  form.appendChild(nameLabel);
+  form.appendChild(nameInput);
+  form.appendChild(validateMsg);
+  form.appendChild(descriptionLabel);
+  form.appendChild(descriptionInput);
+  form.appendChild(deadlineLabel);
+  form.appendChild(deadlineInput);
+  form.appendChild(priorityLabel);
+  form.appendChild(prioritySelect);
+  form.appendChild(folderWarning);
+
+  const modalBtns = document.createElement('div');
+  modalBtns.classList.add('modal-buttons');
+
+  const submitBtn = document.createElement('button');
+  submitBtn.id = 'submit-modal';
+  submitBtn.textContent = 'Submit';
+  submitBtn.dataset.id = todoIndex;
+  submitBtn.addEventListener('click', submitEditTodoModal);
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.id = 'cancel-modal';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', toggleModalDisplay);
+
+  modalBtns.appendChild(submitBtn);
+  modalBtns.appendChild(cancelBtn);
+
+  content.appendChild(header);
+  content.appendChild(form);
+  content.appendChild(modalBtns);
+}
+
+
+
 function createHandler() { // Handles logic after pressing create project button
   toggleModalDisplay();
   if (this.id === 'create-project') generateProjectModal();
@@ -346,7 +522,7 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
     }
 
     if (e.target.classList.contains('edit-todo')) {
-      console.log(this.dataset.index);
+      editTodoFolder(this.dataset.index);
     }
 
     let symbol;
