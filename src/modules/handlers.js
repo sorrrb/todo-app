@@ -514,6 +514,8 @@ function createHandler() { // Handles logic after pressing create project button
 
 
 function tabHandler(e) { // Handles logic after pressing project folder buttons
+  let symbol;
+
   if (this.classList.contains('collapsible-wrapper')) {
     if (e.target.classList.contains('delete-todo')) {
       deleteTodoFolder(this.dataset.index);
@@ -523,9 +525,11 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
 
     if (e.target.classList.contains('edit-todo')) {
       editTodoFolder(this.dataset.index);
+      
+      this.lastElementChild.classList.toggle('hidden');
+      this.lastElementChild.classList.toggle('visible');
+      this.querySelector('h1').innerHTML = `	&${symbol};`
     }
-
-    let symbol;
 
     if (this.lastElementChild.classList.contains('hidden')) {
       symbol = 'minus';
