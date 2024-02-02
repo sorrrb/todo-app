@@ -112,11 +112,32 @@ function generateProjectFolders() { // Creates projects folders and adds to DOM
   const header = createProjectHeader(folders.length);
   content.appendChild(header);
 
+  let projectArray = [];
+
   folders.forEach((folder) => {
-    const tab = createProjectFolder(folder.getTitle().toUpperCase(), FolderIcon, folder.getId());
+    const title = folder.getTitle().toUpperCase();
+    const id = folder.getId();
+    const tab = createProjectFolder(title, FolderIcon, id);
     tab.addEventListener('click', tabHandler);
     content.appendChild(tab);
+
+    const folderObject = {
+      title: folder.getTitle(),
+      id: folder.getId(),
+      todos: folder.getTodos()
+    }
+    
+    const stringifyFolder = JSON.stringify(folderObject);
+
+    projectArray.push(stringifyFolder);
   })
+
+  localStorage.setItem('projects', JSON.stringify(projectArray));
+
+  const projectInfo = localStorage.getItem('projects');
+  const projectInfoParsed = JSON.parse(projectInfo);
+
+  console.log(projectInfoParsed);
 }
 
 
