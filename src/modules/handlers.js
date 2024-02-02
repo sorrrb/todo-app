@@ -84,7 +84,8 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
   }
 
   else {
-    console.log(displayManager.getActiveTab());
+    let todoArray = [];
+
     const foldersName = displayManager.getActiveTab().getTitle();
     const folders = displayManager.getActiveTab().getTodos();
 
@@ -98,7 +99,31 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
       tab.addEventListener('click', tabHandler);
       container.appendChild(tab);
       i++;
+
+      const folderObject = {
+        title: folder.getTitle(),
+        description: folder.getDescription(),
+        deadline: folder.getDueDate(),
+        priority: folder.getPriority()
+      }
+
+      const stringifyFolder = JSON.stringify(folderObject);
+
+      todoArray.push(stringifyFolder);
+
+      console.log(stringifyFolder);
     })
+
+    const projectStorage = localStorage.getItem('projects');
+    const projectsParsed = JSON.parse(projectStorage);
+    projectsParsed.forEach((project) => {
+      console.log(project);
+      console.log(JSON.parse(project));
+      const todoTitle = JSON.parse(project).title;
+      if (todoTitle === foldersName) {
+        // do something
+      }
+    });
   }
 }
 
@@ -598,12 +623,15 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
     const newProjectList = projectManager.getProjects();
     newProjectList.forEach((newProjectObject) => {
       let index = newProjectObject.getId();
-      if (index > 0) newProjectObject.setId(index -= 1);
+      const newIndex = index-1;
+      if (index > 0) newProjectObject.setId(newIndex);
     });
     
     const newProjects = document.querySelectorAll('div.project-folder');
     newProjects.forEach((newProject) => {
-      if (newProject.dataset.index > 0) newProject.dataset.index -= 1;
+      let index = newProject.dataset.index;
+      const newIndex = index-1;
+      if (index > 0) newProject.dataset.index = newIndex;
     });
 
     generateTodoFolders();
@@ -640,7 +668,7 @@ function setDefaultProject() {
 
 
 export function checkLocalStorage() {
-  if (!localStorage.getItem('projects')) {
+  if (localStorage.getItem('projects') === '[]' || !localStorage.getItem('projects')) {
     console.log('NO DATA STORED');
   } else {
     console.log('STORED DATA DETECTED');
