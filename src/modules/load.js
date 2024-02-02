@@ -313,7 +313,6 @@ function createModal() {
 
 
 
-
 export function loadPage() { // Responsible for generating page skeleton and appending to document body
   const pages = [];
 
@@ -328,10 +327,4 @@ export function loadPage() { // Responsible for generating page skeleton and app
   pages.forEach((page) => {
     document.body.appendChild(page);
   })
-
-  if (!localStorage.getItem('projects')) {
-    console.log('NO DATA STORED');
-  } else {
-    console.log('STORED DATA DETECTED');
-  }
 }

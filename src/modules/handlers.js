@@ -84,6 +84,7 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
   }
 
   else {
+    console.log(displayManager.getActiveTab());
     const foldersName = displayManager.getActiveTab().getTitle();
     const folders = displayManager.getActiveTab().getTodos();
 
@@ -133,11 +134,6 @@ function generateProjectFolders() { // Creates projects folders and adds to DOM
   })
 
   localStorage.setItem('projects', JSON.stringify(projectArray));
-
-  const projectInfo = localStorage.getItem('projects');
-  const projectInfoParsed = JSON.parse(projectInfo);
-
-  console.log(projectInfoParsed);
 }
 
 
@@ -639,6 +635,30 @@ function setDefaultProject() {
   const defaultActiveProject = document.querySelector('div.project-folder'); // Sets default active project to All
   defaultActiveProject.classList.add('active-folder');
   displayManager.setActiveTab(defaultActiveProject.querySelector('h3').textContent);
+}
+
+
+
+export function checkLocalStorage() {
+  if (!localStorage.getItem('projects')) {
+    console.log('NO DATA STORED');
+  } else {
+    console.log('STORED DATA DETECTED');
+    const projectInfo = localStorage.getItem('projects');
+    const projectInfoParsed = JSON.parse(projectInfo);
+  
+    projectInfoParsed.forEach((project) => {
+      const infoParsed = JSON.parse(project);
+      
+      const storedProjectObj = createProject(infoParsed.title, infoParsed.id);
+      projectManager.addProject(storedProjectObj);
+    })
+
+    generateProjectFolders();
+
+    const createProjectBtn = document.getElementById('create-project'); // Reimplement event listener for create project button
+    createProjectBtn.addEventListener('click', createHandler);
+  }
 }
 
 
