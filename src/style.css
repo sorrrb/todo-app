@@ -229,29 +229,6 @@ body {
   width: 30%;
 }
 
-@media (max-width: 1500px) {
-  #modal-content {
-    width: 50%;
-  }
-
-}
-
-@media (max-width: 450px) {
-  #modal-content {
-    width: 80%;
-  }
-
-  #main {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #sidebar {
-    border-right: none;
-    border-bottom: 6px solid var(--section-border);
-  }
-}
-
 #modal-content > * {
   padding: 16px;
 }
@@ -326,6 +303,64 @@ body {
   justify-content: end;
   gap: 8px;
 }
+
+
+
+@media (max-width: 1500px) {
+  #modal-content {
+    width: 50%;
+  }
+
+}
+
+@media (max-width: 500px) {
+  #modal-content {
+    width: 80%;
+    margin: 50% auto;
+  }
+
+  #header {
+    padding-inline: 0;
+    justify-content: center;
+  }
+
+  #main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #sidebar {
+    border-right: none;
+    border-bottom: 6px solid var(--section-border);
+  }
+
+  #system-projects {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #projects-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 300px) {
+  #modal-content {
+    width: 90%;
+    margin-block: 10%;
+  }
+
+  #modal-content > form {
+    margin: 0;
+  }
+}
+
+
+
 
 #submit-modal, #cancel-modal {
   background: none;
