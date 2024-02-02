@@ -84,8 +84,6 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
   }
 
   else {
-    let todoArray = [];
-
     const foldersName = displayManager.getActiveTab().getTitle();
     const folders = displayManager.getActiveTab().getTodos();
 
@@ -99,34 +97,50 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
       tab.addEventListener('click', tabHandler);
       container.appendChild(tab);
       i++;
-
-      const folderObject = {
-        title: folder.getTitle(),
-        description: folder.getDescription(),
-        deadline: folder.getDueDate(),
-        priority: folder.getPriority()
-      }
-
-      const stringifyFolder = JSON.stringify(folderObject);
-
-      todoArray.push(stringifyFolder);
-
-      console.log(stringifyFolder);
-    })
-
-    const projectStorage = localStorage.getItem('projects');
-    const projectsParsed = JSON.parse(projectStorage);
-    projectsParsed.forEach((project) => {
-      console.log(project);
-      console.log(JSON.parse(project));
-      const todoTitle = JSON.parse(project).title;
-      if (todoTitle === foldersName) {
-        // do something
-      }
     });
+
+    updateLocalStorage();
   }
 }
 
+
+
+function updateLocalStorage() {
+  let projectArray = [];
+  let todoArray = [];
+
+  let projects = projectManager.getProjects();
+  projects.forEach((project) => {
+    const projectObject = {
+      title: project.getTitle(),
+      id: project.getId(),
+      todos: project.getTodos()
+    }
+    
+    const todos = project.getTodos();
+    todos.forEach((todo) => {
+      const todoObject = {
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        deadline: todo.getDueDate(),
+        priority: todo.getPriority()
+      }
+
+      const stringifyTodo = JSON.stringify(todoObject);
+
+      todoArray.push(stringifyTodo);
+    })
+
+    projectObject.todos = todoArray;
+
+    const stringifyProject = JSON.stringify(projectObject);
+
+    projectArray.push(stringifyProject);
+    todoArray = [];
+  })
+
+  localStorage.setItem('projects', JSON.stringify(projectArray));
+}
 
 
 function generateProjectFolders() { // Creates projects folders and adds to DOM
@@ -138,27 +152,15 @@ function generateProjectFolders() { // Creates projects folders and adds to DOM
   const header = createProjectHeader(folders.length);
   content.appendChild(header);
 
-  let projectArray = [];
-
   folders.forEach((folder) => {
     const title = folder.getTitle().toUpperCase();
     const id = folder.getId();
     const tab = createProjectFolder(title, FolderIcon, id);
     tab.addEventListener('click', tabHandler);
     content.appendChild(tab);
-
-    const folderObject = {
-      title: folder.getTitle(),
-      id: folder.getId(),
-      todos: folder.getTodos()
-    }
-    
-    const stringifyFolder = JSON.stringify(folderObject);
-
-    projectArray.push(stringifyFolder);
   })
 
-  localStorage.setItem('projects', JSON.stringify(projectArray));
+  updateLocalStorage();
 }
 
 
@@ -279,6 +281,7 @@ function submitTodoModal() {
   todos.addTodo(newTodo);
   generateTodoFolders();
   toggleModalDisplay();
+  updateLocalStorage();
 
   const createTodoBtn = document.getElementById('create-todo');
   createTodoBtn.addEventListener('click', createHandler);
@@ -437,6 +440,7 @@ function submitEditTodoModal() {
 
   generateTodoFolders();
   toggleModalDisplay();
+  updateLocalStorage();
 
   const createTodoBtn = document.getElementById('create-todo');
   createTodoBtn.addEventListener('click', createHandler);
@@ -610,11 +614,11 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
 
   const projects = document.querySelectorAll('div.project-folder');
   projects.forEach((project) => {
-    if (project.classList.contains('active-folder')) project.classList.toggle('active-folder');
+    if (project.classList.contains('active-folder')) project.classList.toggle('active-folder'); // Toggle active folder on any folder was previously active
   });
-  this.classList.toggle('active-folder');
+  this.classList.toggle('active-folder'); // Toggle active folder on the folder pressed
 
-  if (this.hasAttribute('data-index') & e.target.classList.contains('delete-project')) {
+  if (this.hasAttribute('data-index') & e.target.classList.contains('delete-project')) { // If delete project button is clicked
     const projectList = projectManager.getProjects();
     projectManager.removeProject(projectList[this.dataset.index]);
     displayManager.setActiveTab('All');
@@ -634,6 +638,7 @@ function tabHandler(e) { // Handles logic after pressing project folder buttons
       if (index > 0) newProject.dataset.index = newIndex;
     });
 
+    updateLocalStorage();
     generateTodoFolders();
 
     const createProjectBtn = document.getElementById('create-project');
@@ -677,9 +682,17 @@ export function checkLocalStorage() {
   
     projectInfoParsed.forEach((project) => {
       const infoParsed = JSON.parse(project);
+      const todosParsed = infoParsed.todos;
       
       const storedProjectObj = createProject(infoParsed.title, infoParsed.id);
       projectManager.addProject(storedProjectObj);
+
+      todosParsed.forEach((todo) => {
+        const todoParsed = JSON.parse(todo);
+
+        const storedTodoObj = createTodo(todoParsed.title, todoParsed.description, todoParsed.deadline, todoParsed. priority);
+        storedProjectObj.addTodo(storedTodoObj);
+      })
     })
 
     generateProjectFolders();
