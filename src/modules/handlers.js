@@ -80,6 +80,7 @@ function generateTodoFolders() { // Creates todo folders and adds to DOM
     const folders = []; // Hard code empty array for now
 
     const header = createTodoHeader(folders.length, foldersName);
+    header.title = 'Will be added soon!';
     content.appendChild(header);
   }
 

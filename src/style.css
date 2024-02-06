@@ -84,6 +84,10 @@ body {
   margin-bottom: 16px;
 }
 
+#system-projects > .project-folder {
+  cursor: not-allowed;
+}
+
 #user-projects {
   gap: 8px;
   margin-top: 16px;

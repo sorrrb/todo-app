@@ -263,6 +263,7 @@ function createMain() {
 
   for (const prop in systemProjects) {
     const systemFolder = createProjectFolder(prop, systemProjects[prop]);
+    systemFolder.title = 'Feature coming soon!';
     systemNav.appendChild(systemFolder);
   }
 
